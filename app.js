@@ -6,6 +6,7 @@ var app = express();
 var http = require('http').Server(app);
 var fs = require('fs');
 var path = require('path');
+var mongoose = require('mongoose');
 var port = 3000;
 
 //socket.io
@@ -13,18 +14,21 @@ var io = require('socket.io')(http);
 
 //config
 var bodyParser = require('body-parser');
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: false
+    extended: true
 }));
+app.use(bodyParser.json());
 
-//routes
+
+//routes for api
 var routes = require('./routes/index');
-app.use('/', routes);
+app.use('/api', routes);
+
+//search .html files and send them
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//start server
+//start server... use http for socket.io, app.listen for normal http server
 http.listen(port, function(){
     console.log('Server listening at port %d', port);
 });
