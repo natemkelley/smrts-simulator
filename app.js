@@ -20,15 +20,16 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+//search .html files and send them
+//app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', express.static('public'))
+
 //routes for api
-var routes = require('./routes/index');
+var routes = require('./routes/api');
 app.use('/api', routes);
 
-//search .html files and send them
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-//start server... use http for socket.io, app.listen for normal http server
+//start server... use http for socket.io, 
+//app.listen for normal http server
 http.listen(port, function(){
     console.log('Server listening at port %d', port);
 });

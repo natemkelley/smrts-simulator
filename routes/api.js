@@ -3,8 +3,11 @@ var request = require('request')
 const https = require('https');
 var router = express.Router();
 
-router.get('/wholeDataSet', function (req, res, next) {
-    res.send(1);
+router.get('/', function (req, res, next) {
+    var testJSON = {
+        testing: true
+    }
+    res.send(testJSON);
 });
 
 
