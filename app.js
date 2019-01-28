@@ -28,6 +28,10 @@ app.use('/', express.static('public'))
 var routes = require('./routes/api');
 app.use('/api', routes);
 
+//set render engine as html
+app.set('view engine', 'html');
+
+
 //start server... use http for socket.io, 
 //app.listen for normal http server
 http.listen(port, function(){
