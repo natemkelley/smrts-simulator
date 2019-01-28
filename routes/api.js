@@ -3,8 +3,6 @@ var request = require('request')
 const https = require('https');
 var router = express.Router();
 
-
-
 function createTestTweet() {
     var testTweet = {
         "created_at": "Thu Apr 06 15:24:15 +0000 2017",
