@@ -2,35 +2,39 @@
 //https://socket.io/docs/rooms-and-namespaces/
 
 exports = module.exports = function (io) {
+    var chat = io
+        .of('/chat')
+        .on('connection', function (socket) {
+            console.log('user socket connected')
+            socket.emit('message', {
+                single: 'only this one socket will get this message',
+            });
+            chat.emit('message', {
+                everyone: 'is getting this message',
+            });
+            
+            socket.on('message', function (data) {
+                console.log('client message', data)
+            })
+        })
+
+
+
+    var news = io
+        .of('/news')
+        .on('connection', function (socket) {
+            console.log('news socket connected')
+        });
+
+
+
+
+
+
     /*io.on('connection', function (socket) {
         console.log('a socket is connected in socket.js');
         socket.on('disconnect', function () {
             io.emit('a socket disconnected');
         });
     });*/
-
-    var chat = io
-        .of('/chat')
-        .on('connection', function (socket) {
-            console.log('chat socket connected')
-            socket.emit('a message', {
-                that: 'only',
-                '/chat': 'will get'
-            });
-            chat.emit('a message', {
-                everyone: 'in',
-                '/chat': 'will get'
-            });
-        });
-
-    var news = io
-        .of('/news')
-        .on('connection', function (socket) {
-            console.log('news socket connected')
-
-            socket.emit('item', {
-                news: 'item'
-            });
-        });
-
 }

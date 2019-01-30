@@ -12,11 +12,17 @@
 
 
   chat.on('connect', function () {
-      console.log('chat socket connected')
-      chat.emit('hi!');
+      console.log('chat socket connected');
+      chat.emit('message', 'this is a message from the client');
+      socket.emit('message', 'this socket is a message from the client');
+
+      callAPI();
+  });
+
+  chat.on('message', function (data) {
+      console.log(data);
   });
 
   news.on('connect', function () {
       console.log('news socket connected')
-      news.emit('woot');
   });
