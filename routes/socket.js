@@ -1,5 +1,6 @@
 //https://socket.io/docs/#Using-with-Express
 //https://socket.io/docs/rooms-and-namespaces/
+//https://gist.github.com/crtr0/2896891
 
 exports = module.exports = function (io) {
     var chat = io
