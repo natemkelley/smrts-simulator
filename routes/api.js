@@ -46,7 +46,7 @@ router.get('/', function (req, res, next) {
     }
     
     var testTweet = createTestTweet();
-    console.log(testTweet)
+    //console.log(testTweet)
     res.send(testTweet);
 });
 
