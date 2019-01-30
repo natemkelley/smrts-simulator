@@ -3,14 +3,15 @@ var express = require('express');
 var request = require('request');
 var path = require('path');
 var app = express();
-var http = require('http').Server(app);
+//var http = require('http').Server(app);
+const server = require('http').createServer(app);
 var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
 var port = 3000;
 
 //socket.io
-var io = require('socket.io')(http);
+//var io = require('socket.io')(http);
 
 //config
 var bodyParser = require('body-parser');
@@ -21,7 +22,6 @@ app.use(bodyParser.json());
 
 
 //search .html files and send them
-//app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static('public'))
 
 //routes for api
@@ -31,10 +31,7 @@ app.use('/api', routes);
 //set render engine as html
 app.set('view engine', 'html');
 
-
-//start server... use http for socket.io, 
-//app.listen for normal http server
-http.listen(port, function(){
+server.listen(port, function(){
     console.log('Server listening at port %d', port);
 });
 
