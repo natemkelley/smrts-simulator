@@ -4,7 +4,7 @@ var request = require('request');
 var path = require('path');
 var app = express();
 //var http = require('http').Server(app);
-const server = require('http').createServer(app);
+const server = require('http').Server(app);
 var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -12,6 +12,10 @@ var port = 3000;
 
 //socket.io
 //var io = require('socket.io')(http);
+var io = require('socket.io')(server);
+var routes = require('./routes/socket')(io);
+
+
 
 //config
 var bodyParser = require('body-parser');
@@ -31,7 +35,7 @@ app.use('/api', routes);
 //set render engine as html
 app.set('view engine', 'html');
 
-server.listen(port, function(){
+server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
 
