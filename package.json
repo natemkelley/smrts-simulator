@@ -16,6 +16,7 @@
         "express": "^4.16.4",
         "foreman": "^3.0.1",
         "fs": "0.0.1-security",
+        "html": "^1.0.0",
         "https": "^1.0.0",
         "marked": "^0.6.0",
         "mongoose": "^5.4.6",

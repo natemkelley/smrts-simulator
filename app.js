@@ -10,14 +10,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var port = 3000;
 
-//socket.io
-//var io = require('socket.io')(http);
-var io = require('socket.io')(server);
-var routes = require('./routes/socket')(io);
-
-
-
-//config
+//config for json use
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: true
@@ -25,19 +18,26 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-//search .html files and send them
-app.use('/', express.static('public'))
+
+//socket.io
+var io = require('socket.io')(server);
+var socket = require('./routes/socket')(io);
 
 //routes for api
 var routes = require('./routes/api');
 app.use('/api', routes);
 
+//.html files from public will be sent on root
+app.use('/', express.static('public'))
+
 //set render engine as html
 app.set('view engine', 'html');
 
+//start server on specified port
 server.listen(port, function () {
     console.log('Server listening at port %d', port);
 });
+
 
 
 // catch 404 and forward to error handler
