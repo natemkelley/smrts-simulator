@@ -1,18 +1,20 @@
 //to use functions inside functions.js use functions.[testFunction](data);
 var functions = require('../functions/functions');
+var SocketIOFileUpload = require("socketio-file-upload");
 
-//these are some resources to learn about socket.io
-//https://socket.io/docs/rooms-and-namespaces/
-//https://gist.github.com/crtr0/2896891
-//https://socket.io/docs/emit-cheatsheet/
 
 module.exports = function (io) {
     var chat = io.of('/chat');
-    var news = io.of('/news')
+    var news = io.of('/news');
 
 
     chat.on('connection', function (socket) {
-        console.log('user socket connected')
+        console.log('user socket connected');
+
+        var uploader = new SocketIOFileUpload();
+        uploader.listen(socket);
+
+
         socket.emit('message', {
             single: 'only this one socket will get this message',
         });
@@ -39,3 +41,15 @@ module.exports = function (io) {
         });
     });*/
 }
+
+
+
+/*********NOTES ON HOW TO USE THIS FILE******************/
+
+//these are some resources to learn about socket.io
+//https://socket.io/docs/rooms-and-namespaces/
+//https://gist.github.com/crtr0/2896891
+//https://socket.io/docs/emit-cheatsheet/
+
+//this is how to use socket.io file uploader
+//https://www.npmjs.com/package/socketio-file-upload
