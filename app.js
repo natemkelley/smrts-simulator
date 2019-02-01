@@ -17,7 +17,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-
 //socket.io
 var io = require('socket.io')(server);
 var SocketIOFileUpload = require("socketio-file-upload");
