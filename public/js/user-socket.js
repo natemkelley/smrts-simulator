@@ -1,31 +1,80 @@
-  var socket = io();
+(function () {
+    var socket = io();
+    var room = "default room";
 
-  var chat = io('/chat');
-  var news = io('/news');
+    /************LISTENER FUNCTIONS FOR SOCKET.IO*********/
+    socket.on('connect', function () {
+        console.log('socket connected');
+
+        socket.on('get list of sims', function (data) {
+            console.log('get list of sims')
+            console.log(data)
+        });
+
+        socket.on('tweet', function (data) {
+            console.log('tweet')
+            console.log(data)
+        });
+
+        socket.on('reset tweets', function (data) {
+            console.log('reset tweets')
+            console.log(data)
+        });
+
+        socket.on('join room', function (data) {
+            console.log('join room')
+            console.log(data)
+        });
+
+        socket.on('get list of rooms', function (data) {
+            console.log('get list of rooms')
+            console.log(data)
+        });
 
 
-  socket.on('connect', function () {
-      console.log('chat socket connected');
-      chat.emit('message', 'this is a message from the client');
-      socket.emit('message', 'this socket is a message from the client');
-
-      callAPI();
-  });
-
-  chat.on('message', function (data) {
-      console.log(data);
-  });
-
-  news.on('connect', function () {
-      console.log('news socket connected')
-  });
+        getListofSims();
+        joinRoom();
+        createRoom();
+    });
 
 
+    /************EMIT FUNCTIONS FOR SOCKET.IO*********/
+    function getListofSims() {
+        socket.emit('get list of sims', 'i want a list of sims');
+    }
 
-  /*socket.on('test', function (data) {
-      console.log(data);
-      socket.emit('client test', {
-          from: 'client',
-          msg: 'this is a great test'
-      });
-  });*/
+    function joinRoom() {
+        var roomName = "default room";
+        socket.emit('join room', roomName);
+    }
+
+    function createRoom() {
+        var roomName = "new room";
+        socket.emit('create room', roomName);
+    }
+
+    function playSimulation() {
+        socket.emit('play', true);
+    }
+
+    function pauseSimulation() {
+        socket.emit('pause', true);
+    }
+
+    function ffSimulation() {
+        socket.emit('fast forward', true);
+    }
+
+    function rwSimulation() {
+        socket.emit('rewind', true);
+    }
+
+
+
+
+
+
+
+
+
+})()
