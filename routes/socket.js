@@ -4,11 +4,7 @@ var SocketIOFileUpload = require("socketio-file-upload");
 
 
 module.exports = function (io) {
-    var chat = io.of('/chat');
-    var news = io.of('/news');
-
-
-    chat.on('connection', function (socket) {
+    io.on('connection', function (socket) {
         console.log('user socket connected');
 
         var uploader = new SocketIOFileUpload();
@@ -26,12 +22,6 @@ module.exports = function (io) {
             console.log('client message', data)
         });
     })
-
-
-    news.on('connection', function (socket) {
-        console.log('news socket connected')
-    });
-
 
     //To be used for entire socket.io
     /*io.on('connection', function (socket) {

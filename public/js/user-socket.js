@@ -4,7 +4,7 @@
   var news = io('/news');
 
 
-  chat.on('connect', function () {
+  socket.on('connect', function () {
       console.log('chat socket connected');
       chat.emit('message', 'this is a message from the client');
       socket.emit('message', 'this socket is a message from the client');
