@@ -1,7 +1,7 @@
 var express = require('express');
-var request = require('request')
-const https = require('https');
 var router = express.Router();
+var bodyParser = require('body-parser');
+var functions = require('../functions/functions')
 
 function createTestTweet() {
     var testTweet = {
@@ -39,14 +39,9 @@ function createTestTweet() {
 }
 
 
-
 router.get('/', function (req, res, next) {
-    var testJSON = {
-        testing: true
-    }
-    
     var testTweet = createTestTweet();
-    //console.log(testTweet)
+
     res.send(testTweet);
 });
 

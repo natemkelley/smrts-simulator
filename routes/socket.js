@@ -1,3 +1,7 @@
+//to use functions inside functions.js use functions.[testFunction](data);
+var functions = require('../functions/functions');
+
+//these are some resources to learn about socket.io
 //https://socket.io/docs/rooms-and-namespaces/
 //https://gist.github.com/crtr0/2896891
 //https://socket.io/docs/emit-cheatsheet/

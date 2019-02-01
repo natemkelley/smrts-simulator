@@ -3,7 +3,6 @@ var express = require('express');
 var request = require('request');
 var path = require('path');
 var app = express();
-//var http = require('http').Server(app);
 const server = require('http').Server(app);
 var fs = require('fs');
 var path = require('path');
@@ -13,7 +12,7 @@ var port = 3000;
 //config for json use
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
 }));
 app.use(bodyParser.json());
 
