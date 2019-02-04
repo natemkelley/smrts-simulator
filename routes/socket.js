@@ -10,7 +10,6 @@ module.exports = function (io) {
         var uploader = new SocketIOFileUpload();
         uploader.listen(socket);
 
-
         socket.emit('message', {
             single: 'only this one socket will get this message',
         });
