@@ -7,24 +7,7 @@ const server = require('http').Server(app);
 var fs = require('fs');
 var path = require('path');
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var port = 3000;
-
-// mongoose connection
-mongoose.connect('mongodb://localhost/smrts');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // we're connected!
-  console.log("connected to mongodb");
-  var Tweet = mongoose.model('Tweet', 
-    new Schema({ date:Date, id:String, rtc:Number, text:String }), 
-    'twitter');     // collection name
-  Tweet.find({}, function(err, data) { 
-      console.log('loaded data using mongoose successfully');
-    //   console.log(err, data, data.length);
-    });
-});
 
 //config for json use
 var bodyParser = require('body-parser');
