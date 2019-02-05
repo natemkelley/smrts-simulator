@@ -22,8 +22,7 @@
         });
 
         socket.on('join room', function (data) {
-            console.log('join room')
-            console.log(data)
+            console.log('joining room', data)
         });
 
         socket.on('get list of rooms', function (data) {
@@ -32,24 +31,26 @@
         });
 
 
-        getListofSims();
-        joinRoom();
-        createRoom();
+        emitGetListofSims();
+        requestJoinRoom();
+        requestCreateRoom();
     });
 
 
+
     /************EMIT FUNCTIONS FOR SOCKET.IO*********/
-    function getListofSims() {
+    function emitGetListofSims() {
         socket.emit('get list of sims', 'i want a list of sims');
     }
 
-    function joinRoom() {
+    function requestJoinRoom() {
         var roomName = "default room";
         socket.emit('join room', roomName);
     }
 
-    function createRoom() {
+    function requestCreateRoom() {
         var roomName = "new room";
+        console.log('creating room', roomName)
         socket.emit('create room', roomName);
     }
 
@@ -68,12 +69,6 @@
     function rwSimulation() {
         socket.emit('rewind', true);
     }
-
-
-
-
-
-
 
 
 
