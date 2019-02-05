@@ -32,12 +32,14 @@
         });
 
 
-        emitListofSims();
+        getListofSims();
+        joinRoom();
+        createRoom();
     });
 
 
     /************EMIT FUNCTIONS FOR SOCKET.IO*********/
-    function emitListofSims() {
+    function getListofSims() {
         socket.emit('get list of sims', 'i want a list of sims');
     }
 
@@ -66,6 +68,12 @@
     function rwSimulation() {
         socket.emit('rewind', true);
     }
+
+
+
+
+
+
 
 
 
