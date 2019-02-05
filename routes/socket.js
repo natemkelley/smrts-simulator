@@ -12,6 +12,9 @@ module.exports = function (io) {
         socket.on('get list of sims', function (data) {
             emitListOfSims(io, room)
         });
+        socket.on('get list of rooms', function (data) {
+            emitListOfRooms(io, room)
+        });
         socket.on('join room', function (data) {
             console.log('joining room ->', data);
             room = data;

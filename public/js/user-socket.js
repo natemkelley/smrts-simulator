@@ -36,6 +36,7 @@
 
 
         emitGetListofSims();
+        emitGetListofRooms();
         requestJoinRoom();
         requestCreateRoom();
     });
@@ -45,6 +46,10 @@
     /************EMIT FUNCTIONS FOR SOCKET.IO*********/
     function emitGetListofSims() {
         socket.emit('get list of sims', 'i want a list of sims');
+    }
+
+    function emitGetListofRooms() {
+        socket.emit('get list of rooms', 'i want a list of rooms');
     }
 
     function requestJoinRoom() {
