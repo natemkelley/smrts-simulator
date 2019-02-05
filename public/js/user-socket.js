@@ -25,6 +25,10 @@
             console.log('joining room', data)
         });
 
+        socket.on('create room', function (data) {
+            console.log('room has been created', data)
+        });
+
         socket.on('get list of rooms', function (data) {
             console.log('get list of rooms')
             console.log(data)
@@ -45,6 +49,7 @@
 
     function requestJoinRoom() {
         var roomName = "default room";
+        console.log('request to join room', roomName)
         socket.emit('join room', roomName);
     }
 

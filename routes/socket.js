@@ -21,6 +21,7 @@ module.exports = function (io) {
         socket.on('create room', function (data) {
             console.log('creating room ->', data);
             room = data;
+            emitCreateRoom(io, room);
             socket.join(data);
             emitSendJoinRoom(io, room);
         });
@@ -77,6 +78,10 @@ function emitListOfRooms(io) {
     var returnValue = ["room one", "room two", "room three"];
 
     io.emit('get list of rooms', returnValue);
+}
+
+function emitCreateRoom(io, room) {
+    io.emit('create room', room);
 }
 
 
