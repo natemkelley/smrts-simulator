@@ -22,6 +22,7 @@ module.exports = function (io) {
             room = data;
             socket.join(data);
             emitSendJoinRoom(io, room);
+            emitSendTweet(io, room);
         });
         socket.on('create room', function (data) {
             console.log('creating room ->', data);
@@ -46,9 +47,12 @@ module.exports = function (io) {
             console.log('rewind', data);
         });
 
-        socket.leave(room, function () {
-            console.log('socket leaving room');
+        socket.on('disconnect', function () {
+            socket.leave(room, function () {
+                console.log('socket leaving room');
+            });
         });
+
     });
 }
 
@@ -64,7 +68,7 @@ function emitListOfSims(io) {
 function emitSendTweet(io, room) {
     console.log('send tweet');
 
-    var returnValue = "list of tweets";
+    var returnValue = functions.testTweet();
     io.to(room).emit('tweet', returnValue);
 }
 
