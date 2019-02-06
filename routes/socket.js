@@ -1,7 +1,7 @@
 var SocketIOFileUpload = require("socketio-file-upload");
 var functions = require('../functions/functions');
 
-
+//establish a socket connection with the server
 module.exports = function (io) {
     var uploader = new SocketIOFileUpload();
 

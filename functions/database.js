@@ -3,14 +3,18 @@ var mongoose = require('mongoose');
 //define where to connect the database
 mongoose.connect('mongodb://localhost/smrts');
 
-//establish a connect
-var db = mongoose.connection;
-
-//test a connection
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log("connected to mongodb");
+//successful connection
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open');
 });
+
+//check for errors
+mongoose.connection.on('error', function (err) {
+    if (err) {
+        throw err;
+    }
+});
+
 
 
 /***********TWITTER SIMULATIONS*************/
@@ -27,7 +31,7 @@ function saveTwitterSimulation() {
     });
     testTwitterSimulation.save(function (err) {
         if (err) return handleError(err);
-        console.log('********saved*********');
+        console.log('\n********saved tweet*********');
         getAllTwitterSimulation();
     });
 }

@@ -9,9 +9,7 @@ var path = require('path');
 var port = 3000;
 
 
-//connect to mongo via mongoose
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/smrts');
+//connect to the database
 require('./functions/database')
 
 
