@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 
 //define where to connect the database
-mongoose.connect('mongodb://localhost/smrts');
+mongoose.connect('mongodb://localhost/smrts', {
+    useNewUrlParser: true
+});
 
 //successful connection
 mongoose.connection.on('connected', function () {
@@ -31,10 +33,11 @@ function saveTwitterSimulation() {
     });
     testTwitterSimulation.save(function (err) {
         if (err) return handleError(err);
-        console.log('\n********saved tweet*********');
+        console.log('\nsaved tweet');
         getAllTwitterSimulation();
     });
 }
+
 function getAllTwitterSimulation() {
     var query = twitterSimulation.find({});
     query.then(function (doc) {
@@ -42,13 +45,12 @@ function getAllTwitterSimulation() {
         removeAll();
     });
 }
+
 function removeAll() {
     var removeAll = twitterSimulation.deleteMany({});
-    removeAll.then(function (err) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log('deleted all documents')
+    removeAll.then(function (log, err) {
+        if (log) {
+            console.log(log)
         }
     });
 }
