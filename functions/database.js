@@ -7,7 +7,7 @@ mongoose.connect('mongodb://localhost/smrts', {
 
 //successful connection
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose default connection open');
+    console.log('Mongoose default connection open'.green);
 });
 
 //check for errors
@@ -37,7 +37,6 @@ function saveTwitterSimulation() {
         getAllTwitterSimulation();
     });
 }
-
 function getAllTwitterSimulation() {
     var query = twitterSimulation.find({});
     query.then(function (doc) {
@@ -45,7 +44,6 @@ function getAllTwitterSimulation() {
         removeAll();
     });
 }
-
 function removeAll() {
     var removeAll = twitterSimulation.deleteMany({});
     removeAll.then(function (log, err) {

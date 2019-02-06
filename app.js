@@ -1,4 +1,5 @@
 //server
+var colors = require('colors');
 var express = require('express');
 var request = require('request');
 var path = require('path');
@@ -40,8 +41,9 @@ app.set('view engine', 'html');
 
 //start server on specified port
 server.listen(port, function () {
-    console.log('Server listening at port %d', port);
+    console.log('Server listening at port %d'.green, port);
 });
+
 
 
 
