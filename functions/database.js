@@ -45,7 +45,6 @@ function getAllTwitterSimulation() {
         removeAll();
     });
 }
-
 function removeAll() {
     var removeAll = twitterSimulation.deleteMany({});
     removeAll.then(function (log, err) {
