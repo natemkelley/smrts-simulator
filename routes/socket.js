@@ -1,12 +1,14 @@
 var SocketIOFileUpload = require("socketio-file-upload");
+var functions = require('../functions/functions');
 
+//establish a socket connection with the server
 module.exports = function (io) {
     var uploader = new SocketIOFileUpload();
 
     io.on('connection', function (socket) {
         var room = null;
 
-        console.log('user socket connected');
+        console.log('\nuser socket connected');
         uploader.listen(socket);
 
         socket.on('get list of sims', function (data) {
@@ -20,6 +22,7 @@ module.exports = function (io) {
             room = data;
             socket.join(data);
             emitSendJoinRoom(io, room);
+            emitSendTweet(io, room);
         });
         socket.on('create room', function (data) {
             console.log('creating room ->', data);
@@ -43,8 +46,13 @@ module.exports = function (io) {
         socket.on('rewind', function (data) {
             console.log('rewind', data);
         });
-        console.log('disconnect');
-        socket.leave(room);
+
+        socket.on('disconnect', function () {
+            socket.leave(room, function () {
+                console.log('socket leaving room');
+            });
+        });
+
     });
 }
 
@@ -60,7 +68,7 @@ function emitListOfSims(io) {
 function emitSendTweet(io, room) {
     console.log('send tweet');
 
-    var returnValue = "list of tweets";
+    var returnValue = functions.testTweet();
     io.to(room).emit('tweet', returnValue);
 }
 

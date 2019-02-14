@@ -1,4 +1,5 @@
 //server
+var colors = require('colors');
 var express = require('express');
 var request = require('request');
 var path = require('path');
@@ -6,34 +7,11 @@ var app = express();
 const server = require('http').Server(app);
 var fs = require('fs');
 var path = require('path');
-var mongoose = require('mongoose');
 var port = 3000;
 
 
-
-// mongoose connection
-var Schema = mongoose.Schema;
-mongoose.connect('mongodb://localhost/smrts');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    // we're connected!
-    console.log("connected to mongodb");
-    var Tweet = mongoose.model('Tweet',
-        new Schema({
-            date: Date,
-            id: String,
-            rtc: Number,
-            text: String
-        }),
-        'twitter'); // collection name
-    Tweet.find({}, function (err, data) {
-        console.log('loaded data using mongoose successfully');
-        //   console.log(err, data, data.length);
-    });
-});
-
-
+//connect to the database
+require('./functions/database')
 
 
 //config for json use
@@ -63,8 +41,9 @@ app.set('view engine', 'html');
 
 //start server on specified port
 server.listen(port, function () {
-    console.log('Server listening at port %d', port);
+    console.log('Server listening at port %d'.green, port);
 });
+
 
 
 
