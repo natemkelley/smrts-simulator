@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var mongoose = require('mongoose');
 
 
@@ -16,7 +15,12 @@ var twitterSimulationSchema = new mongoose.Schema({
 
 //createa a model to be called when creating a new simulation
 mongoose.model('twitterSimulation', twitterSimulationSchema);
-=======
+
+
+
+
+
+
 /*
 ===Fields Amanda wants to have used===
 
@@ -190,4 +194,3 @@ matching_rules 	Array of Rule Objects 	Present in filtered products such as Twit
 
 
 */
->>>>>>> 0a1ef58d6630fdb334c620fa3b7557761c7f737c
