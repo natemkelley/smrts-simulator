@@ -4451,6 +4451,7 @@ node_modules/.bin/is-ci
 node_modules/.bin/html.cmd
 node_modules/.bin/html
 node_modules/.bin/atob.cmd
+<<<<<<< HEAD
 node_modules/color-string/CHANGELOG.md
 node_modules/color-string/index.js
 node_modules/color-string/LICENSE
@@ -4481,6 +4482,8 @@ node_modules/colors/README.md
 node_modules/colors/safe.d.ts
 node_modules/colors/safe.js
 node_modules/colors/themes/generic-logging.js
+=======
+>>>>>>> mongoose-with-working-twitter-model
 node_modules/fsevents/.travis.yml
 node_modules/fsevents/binding.gyp
 node_modules/fsevents/fsevents.cc
@@ -5029,11 +5032,14 @@ node_modules/fsevents/src/constants.cc
 node_modules/fsevents/src/methods.cc
 node_modules/fsevents/src/storage.cc
 node_modules/fsevents/src/thread.cc
+<<<<<<< HEAD
 node_modules/is-arrayish/index.js
 node_modules/is-arrayish/LICENSE
 node_modules/is-arrayish/package.json
 node_modules/is-arrayish/README.md
 node_modules/is-arrayish/yarn-error.log
+=======
+>>>>>>> mongoose-with-working-twitter-model
 node_modules/nan/CHANGELOG.md
 node_modules/nan/doc/asyncworker.md
 node_modules/nan/doc/buffers.md
@@ -5080,6 +5086,44 @@ node_modules/nan/README.md
 node_modules/nan/tools/1to2.js
 node_modules/nan/tools/package.json
 node_modules/nan/tools/README.md
+<<<<<<< HEAD
+=======
+node_modules/color-string/CHANGELOG.md
+node_modules/color-string/index.js
+node_modules/color-string/LICENSE
+node_modules/color-string/package.json
+node_modules/color-string/README.md
+node_modules/color/index.js
+node_modules/color/LICENSE
+node_modules/color/package.json
+node_modules/color/README.md
+node_modules/colors/examples/normal-usage.js
+node_modules/colors/examples/safe-string.js
+node_modules/colors/index.d.ts
+node_modules/colors/lib/colors.js
+node_modules/colors/lib/custom/trap.js
+node_modules/colors/lib/custom/zalgo.js
+node_modules/colors/lib/extendStringPrototype.js
+node_modules/colors/lib/index.js
+node_modules/colors/lib/maps/america.js
+node_modules/colors/lib/maps/rainbow.js
+node_modules/colors/lib/maps/random.js
+node_modules/colors/lib/maps/zebra.js
+node_modules/colors/lib/styles.js
+node_modules/colors/lib/system/has-flag.js
+node_modules/colors/lib/system/supports-colors.js
+node_modules/colors/LICENSE
+node_modules/colors/package.json
+node_modules/colors/README.md
+node_modules/colors/safe.d.ts
+node_modules/colors/safe.js
+node_modules/colors/themes/generic-logging.js
+node_modules/is-arrayish/index.js
+node_modules/is-arrayish/LICENSE
+node_modules/is-arrayish/package.json
+node_modules/is-arrayish/README.md
+node_modules/is-arrayish/yarn-error.log
+>>>>>>> mongoose-with-working-twitter-model
 node_modules/simple-swizzle/index.js
 node_modules/simple-swizzle/LICENSE
 node_modules/simple-swizzle/package.json
