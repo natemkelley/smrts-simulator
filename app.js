@@ -1,7 +1,11 @@
 //server
 var express = require('express');
 var request = require('request');
-var path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
 var app = express();
 const server = require('http').Server(app);
 var fs = require('fs');
@@ -9,6 +13,26 @@ var path = require('path');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var port = 3000;
+app.use(logger('dev'));
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(fileUpload());
+app.use('/public', express.static(__dirname + '/public'));
+
+
+app.post('/upload', (req, res, next) => {
+  console.log(req);
+  let File = req.files.file;
+  File.mv(`${__dirname}/public/${req.body.filename}`, function(err) {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    res.json({file: `public/${req.body.filename}`});
+  });
+
+})
 
 // mongoose connection
 mongoose.connect('mongodb://localhost/smrts');
@@ -27,7 +51,6 @@ db.once('open', function() {
 });
 
 //config for json use
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -38,7 +61,7 @@ app.use(bodyParser.json());
 var io = require('socket.io')(server);
 var SocketIOFileUpload = require("socketio-file-upload");
 app.use(SocketIOFileUpload.router)
-var socket = require('./routes/socket')(io);
+// var socket = require('./routes/socket')(io);
 
 
 //routes for api
