@@ -3,10 +3,10 @@ var mongoose = require('mongoose');
 
 //define the schema for the data
 var twitterSimulationSchema = new mongoose.Schema({
-    user: Date,
+    user: String,
     nameOfSim: String,
-    type: Number,
-    groups:Array,
+    type: String,
+    groups:[String],
     private:Boolean,
     date:Date,
     simulation:{}
