@@ -1,16 +1,157 @@
 var mongoose = require('mongoose');
 
+var tweetSchema = new mongoose.Schema({
+    text: String,
+    truncated: Boolean,
+    in_reply_to_user_id: Number,
+    in_reply_to_status_id: Number,
+    favorited: Boolean,
+    source: String,
+    in_reply_to_screen_name: String,
+    in_reply_to_status_id_str: String,
+    id_str: String,
+    entities: {
+        user_mentions: [
+            {
+                indices: [Number],
+                screen_name: String,
+                id_str: String,
+                name: String,
+                id: Number
+            }
+        ],
+        urls: [String],
+        hashtags: [String]
+    },
+    contributors: [String],
+    retweeted: Boolean,
+    in_reply_to_user_id_str: String,
+    place: String,
+    retweet_count: Number,
+    created_at: Date,
+    retweeted_status: {
+        text: String,
+        truncated: Boolean,
+        in_reply_to_user_id: Number,
+        in_reply_to_status_id: Number,
+        favorited: Boolean,
+        source: String,
+        in_reply_to_screen_name: String,
+        in_reply_to_status_id_str: String,
+        id_str: String,
+        entities: {
+            user_mentions: [String],
+            urls: [String],
+            hashtags: [
+                {
+                    text: String,
+                    indices: [Number]
+                }
+            ]
+        },
+        contributors: String,
+        retweeted: Boolean,
+        in_reply_to_user_id_str: String,
+        place: String,
+        retweet_count: Number,
+        created_at: Date,
+        user: {
+            notifications: [String],
+            profile_use_background_image: Boolean,
+            statuses_count: Number,
+            profile_background_color: String,
+            followers_count: Number,
+            profile_image_url: String,
+            listed_count: Number,
+            profile_background_image_url: String,
+            description: String,
+            screen_name: String,
+            default_profile: Boolean,
+            verified: Boolean,
+            time_zone: String,
+            profile_text_color: String,
+            is_translator: Boolean,
+            profile_sidebar_fill_color: String,
+            location: String,
+            id_str: String,
+            default_profile_image: Boolean,
+            profile_background_tile: Boolean,
+            lang: String,
+            friends_count: Number,
+            protected: Boolean,
+            favourites_count: Number,
+            created_at: Date,
+            profile_link_color: String,
+            name: String,
+            show_all_inline_media: Boolean,
+            follow_request_sent: Boolean,
+            geo_enabled: Boolean,
+            profile_sidebar_border_color: String,
+            url: String,
+            id: Number,
+            contributors_enabled: Boolean,
+            following: [String],
+            utc_offset: Number
+        },
+        id: Number,
+        coordinates: [],
+        geo: []
+    },
+    user: {
+        notifications: [String],
+        profile_use_background_image: Boolean,
+        statuses_count: Number,
+        profile_background_color: String,
+        followers_count: Number,
+        profile_image_url: String,
+        listed_count: Number,
+        profile_background_image_url: String,
+        description: String,
+        screen_name: String,
+        default_profile: Boolean,
+        verified: Boolean,
+        time_zone: String,
+        profile_text_color: String,
+        is_translator: Boolean,
+        profile_sidebar_fill_color: String,
+        location: String,
+        id_str: String,
+        default_profile_image: Boolean,
+        profile_background_tile: Boolean,
+        lang: String,
+        friends_count: Number,
+        protected: Boolean,
+        favourites_count: Number,
+        created_at: Date,
+        profile_link_color: String,
+        name: String,
+        show_all_inline_media: Boolean,
+        follow_request_sent: Boolean,
+        geo_enabled: Boolean,
+        profile_sidebar_border_color: String,
+        url: String,
+        id: Number,
+        contributors_enabled: Boolean,
+        following: [String],
+        utc_offset: Number
+    },
+    id: Number,
+    coordinates: [],
+    geo: []
+});
 
 //define the schema for the data
 var twitterSimulationSchema = new mongoose.Schema({
-    user: Date,
+    user: String,
     nameOfSim: String,
-    type: Number,
-    groups:Array,
+    type: String,
+    groups:[String],
     private:Boolean,
     date:Date,
-    simulation:{}
+    simulation:[tweetSchema]
 });
+
+
 
 
 //createa a model to be called when creating a new simulation
