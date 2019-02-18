@@ -11,11 +11,12 @@ exports.test = function (data) {
 }
 
 exports.testTweetSimulation = function (data) {
-    var tweet = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'))
+    var tweet = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
     var tweetArray = [];
-    tweetArray.push(tweet);
 
-    console.log('testTweetSimulation');
+    for (var i = 0; i < 200; i++) {
+        tweetArray.push(tweet);
+    }
 
     return tweetArray
 }
