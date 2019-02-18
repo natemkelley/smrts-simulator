@@ -145,10 +145,10 @@ var twitterSimulationSchema = new mongoose.Schema({
     user: String,
     nameOfSim: String,
     type: String,
-    groups:[String],
-    private:Boolean,
-    date:Date,
-    simulation:[tweetSchema]
+    groups: [String],
+    private: Boolean,
+    date: Date,
+    simulation: [tweetSchema]
 });
 
 
