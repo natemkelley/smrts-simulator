@@ -153,9 +153,9 @@ var twitterSimulationSchema = new mongoose.Schema({
 
 
 
-
 //createa a model to be called when creating a new simulation
-mongoose.model('twitterSimulation', twitterSimulationSchema);
+mongoose.model('tweetModel', twitterSimulationSchema);
+mongoose.model('twitterSimulationModel', twitterSimulationSchema);
 
 
 

@@ -22,29 +22,35 @@ mongoose.connection.on('error', function (err) {
 
 /***********TWITTER SIMULATIONS*************/
 //define the model and schema for twitter
-var twitterModel = require('../models/twitterModel');
-var twitterSimulation = mongoose.model('twitterSimulation');
+require('../models/twitterModel');
+var twitterSimulationModel = mongoose.model('twitterSimulationModel');
+var tweetScheme = mongoose.model('tweetModel');
 
-function saveTwitterSimulation() {
-    var testTwitterSimulation = new twitterSimulation({
+function saveTwitterSimulation(twitterSimulationData) {
+    var testTweetSimulation = functions.testTweetSimulation();
+
+    var saveThisTwitterSimulation = new twitterSimulationModel({
         date: new Date(),
-        id: 'id test',
-        rtc: 101,
-        text: 'This is some test text'
+        user: 'test user',
+        nameOfSim: 'test simulation',
+        type: 'twitter',
+        groups: ['group 1', 'group 2'],
+        private: false,
+        simulation: testTweetSimulation
     });
-    testTwitterSimulation.save(function (err) {
+    saveThisTwitterSimulation.save(function (err) {
         if (err) return handleError(err);
         console.log('testing saved tweet successful'.green);
-        getAllTwitterSimulation();
     });
 }
 
 function getAllTwitterSimulation() {
     var query = twitterSimulation.find({});
     query.then(function (doc) {
-        removeAll();
+        //removeAll();
     });
 }
+
 function removeAll() {
     var removeAll = twitterSimulation.deleteMany({});
     removeAll.then(function (log, err) {
