@@ -10,7 +10,7 @@ function sendTestSimulation() {
     function createSimulation() {
         var simulation = []
 
-        for (var i = 0; i < 200; i++) {
+        for (var i = 0; i < 10; i++) {
             simulation.push(createTweet());
         }
 
@@ -22,7 +22,6 @@ function sendTestSimulation() {
         var tweet = {
             created_at: randomDate(new Date(2012, 0, 1), new Date()),
             id_str: Math.floor(Math.random() * 100000000 + 1),
-            retweet_count: Math.floor(Math.random() * 100),
             retweet_count: Math.floor(Math.random() * 100),
             favorite_count: Math.floor(Math.random() * 100),
             favorited: Math.floor(Math.random()),

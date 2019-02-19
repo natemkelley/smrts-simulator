@@ -26,17 +26,17 @@ require('../models/twitterModel');
 var twitterSimulationModel = mongoose.model('twitterSimulationModel');
 var tweetScheme = mongoose.model('tweetModel');
 
-function saveTwitterSimulation(twitterSimulationData) {
-    var testTweetSimulation = functions.testTweetSimulation();
+function saveTwitterSimulation(twitterSimulationData, user, nameOfSim, private, groups) {
+    twitterSimulationData = functions.testTweetSimulation();
 
     var saveThisTwitterSimulation = new twitterSimulationModel({
         date: new Date(),
         user: 'test user',
         nameOfSim: 'test simulation',
         type: 'twitter',
-        groups: ['group 1', 'group 2'],
+        groups: [],
         private: false,
-        simulation: testTweetSimulation
+        simulation: twitterSimulationData
     });
     saveThisTwitterSimulation.save(function (err) {
         if (err) return handleError(err);
