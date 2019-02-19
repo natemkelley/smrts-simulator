@@ -14,7 +14,7 @@ exports.testTweetSimulation = function (data) {
     var tweet = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
     var tweetArray = [];
 
-    for (var i = 0; i < 200; i++) {
+    for (var i = 0; i < 50; i++) {
         tweetArray.push(tweet);
     }
 

@@ -52,7 +52,7 @@ function getAllTwitterSimulation() {
 }
 
 function removeAll() {
-    var removeAll = twitterSimulation.deleteMany({});
+    var removeAll = twitterSimulationModel.deleteMany({});
     removeAll.then(function (log, err) {
         if (log) {
             console.log('deleting all tweets status '.yellow + JSON.stringify(log).yellow)
