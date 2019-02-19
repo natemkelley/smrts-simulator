@@ -23,6 +23,12 @@ var tweetSchema = new mongoose.Schema({
         urls: [String],
         hashtags: [String]
     },
+    extended_entities: {
+        media: [{
+            media_url: String,
+            type: String
+        }]
+    },
     contributors: [String],
     retweeted: Boolean,
     in_reply_to_user_id_str: String,
@@ -166,14 +172,14 @@ mongoose.model('twitterSimulationModel', twitterSimulationSchema);
 ===Fields Amanda wants to have used===
 
 Timestamp
-ID string
-Retweet count
-Like count
-favorite
-Text
-User description
-User followers
-User following
+ID string !
+Retweet count !
+Like count !
+favorite !
+Text !
+User description !
+User followers !
+User following !
 User # messages sent
 User location
 User name

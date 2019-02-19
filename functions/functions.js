@@ -3,6 +3,10 @@ var fs = require('fs');
 //database functions
 var database = require('../functions/database')
 
+exports.processUpload = function (data){
+    console.log('\nprocessing upload'.red);
+    
+}
 
 
 exports.test = function (data) {

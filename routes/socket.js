@@ -47,6 +47,10 @@ module.exports = function (io) {
             console.log('rewind', data);
         });
 
+        socket.on('upload simulation', function (data) {
+            functions.processUpload(data);
+        });
+
         socket.on('disconnect', function () {
             socket.leave(room, function () {
                 console.log('socket leaving room');
@@ -68,7 +72,7 @@ function emitListOfSims(io) {
 function emitSendTweet(io, room) {
     console.log('send tweet');
 
-    var returnValue = functions.testTweet();
+    var returnValue = functions.testTweetSimulation();
     io.to(room).emit('tweet', returnValue);
 }
 
