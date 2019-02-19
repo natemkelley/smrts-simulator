@@ -1,4 +1,6 @@
+var colors = require('colors/safe');
 var functions = require('../functions/functions')
+var sockets = require('../routes/socket')
 var mongoose = require('mongoose');
 
 //define where to connect the database
@@ -26,9 +28,7 @@ require('../models/twitterModel');
 var twitterSimulationModel = mongoose.model('twitterSimulationModel');
 var tweetScheme = mongoose.model('tweetModel');
 
-exports.saveTwitterSimulation = function(twitterSimulationData, user, nameOfSim, private, groups) {
-    //twitterSimulationData = functions.testTweetSimulation();
-
+exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim, private, groups) {
     if (!user) {
         user = 'default user'
     }
@@ -51,9 +51,15 @@ exports.saveTwitterSimulation = function(twitterSimulationData, user, nameOfSim,
         private: private,
         simulation: twitterSimulationData
     });
+    console.log(colors.cyan('preparing to save simulation'));
     saveThisTwitterSimulation.save(function (err) {
         if (err) return handleError(err);
         console.log('testing saved tweet successful'.green);
+
+        var returnVal = {
+            status: true
+        };
+        sockets.sendUploadStatus(returnVal);
     });
 }
 
@@ -68,9 +74,13 @@ function removeAll() {
     var removeAll = twitterSimulationModel.deleteMany({});
     removeAll.then(function (log, err) {
         if (log) {
-            console.log('deleting all tweets status '.yellow + JSON.stringify(log).yellow)
+            console.log('deleting all tweets status '.red + JSON.stringify(log).red)
         }
     });
+}
+
+function handleError(err) {
+    console.log(colors.red(err));
 }
 
 removeAll();

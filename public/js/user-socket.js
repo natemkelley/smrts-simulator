@@ -28,6 +28,10 @@ socket.on('connect', function () {
         console.log('room has been created', data)
     });
 
+    socket.on('upload status', function (data) {
+        console.log(data)
+    });
+
     socket.on('get list of rooms', function (data) {
         console.log('get list of rooms')
         console.log(data)

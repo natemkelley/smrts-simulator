@@ -10,7 +10,7 @@ function sendTestSimulation() {
     function createSimulation() {
         var simulation = []
 
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 200; i++) {
             simulation.push(createTweet());
         }
 
@@ -37,7 +37,7 @@ function sendTestSimulation() {
             typeof: "image",
             verified:  Math.random() >= 0.5,
             coordinates: [-75.14310264, 40.05701649],
-            replyy: "I don't know what to do for this field"
+            reply: "I don't know what to do for this field"
         }
 
         return tweet

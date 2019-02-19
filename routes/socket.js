@@ -1,15 +1,12 @@
-var SocketIOFileUpload = require("socketio-file-upload");
 var functions = require('../functions/functions');
 
 //establish a socket connection with the server
 module.exports = function (io) {
-    var uploader = new SocketIOFileUpload();
-
+    fallbackIO = io
     io.on('connection', function (socket) {
         var room = null;
 
         console.log('\nuser socket connected');
-        uploader.listen(socket);
 
         socket.on('get list of sims', function (data) {
             emitListOfSims(io, room)
@@ -34,19 +31,15 @@ module.exports = function (io) {
         socket.on('play', function (data) {
             console.log('play', data);
         });
-
         socket.on('pause', function (data) {
             console.log('pause', data);
         });
-
         socket.on('fast forward', function (data) {
             console.log('fast forward', data);
         });
-
         socket.on('rewind', function (data) {
             console.log('rewind', data);
         });
-
         socket.on('upload simulation', function (data) {
             functions.processUpload(data);
         });
@@ -58,9 +51,11 @@ module.exports = function (io) {
         });
 
     });
+
+    module.exports.sendUploadStatus = function (status) {
+        emitUploadStatus(io, status)
+    }
 }
-
-
 
 
 function emitListOfSims(io) {
@@ -99,6 +94,9 @@ function emitCreateRoom(io, room) {
     io.emit('create room', room);
 }
 
+function emitUploadStatus(io, status) {
+    io.emit('upload status', status);
+}
 
 /*********NOTES ON HOW TO USE THIS FILE******************/
 //https://www.npmjs.com/package/socketio-file-upload
