@@ -4,7 +4,6 @@
     "in_reply_to_user_id": null,
     "in_reply_to_status_id": null,
     "favorited": null,
-    "favorite_count": null,
     "source": null,
     "in_reply_to_screen_name": null,
     "in_reply_to_status_id_str": null,
@@ -21,6 +20,12 @@
             ],
         "urls": [],
         "hashtags": []
+    },
+    "extended_entities": {
+        "media": [{
+            "media_url": null,
+            "type": null
+        }]
     },
     "contributors": null,
     "retweeted": null,
@@ -136,8 +141,5 @@
     },
     "id": null,
     "coordinates": null,
-    "geo": null,
-    "extended_entities": {
-        "media": []
-    }
+    "geo": null
 }

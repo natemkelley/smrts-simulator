@@ -6,6 +6,7 @@ var tweetSchema = new mongoose.Schema({
     in_reply_to_user_id: Number,
     in_reply_to_status_id: Number,
     favorited: Boolean,
+    favorite_count: Number,
     source: String,
     in_reply_to_screen_name: String,
     in_reply_to_status_id_str: String,
@@ -22,12 +23,6 @@ var tweetSchema = new mongoose.Schema({
         ],
         urls: [String],
         hashtags: [String]
-    },
-    extended_entities: {
-        media: [{
-            media_url: String,
-            type: String
-        }]
     },
     contributors: [String],
     retweeted: Boolean,
@@ -143,7 +138,13 @@ var tweetSchema = new mongoose.Schema({
     },
     id: Number,
     coordinates: [],
-    geo: []
+    geo: [],
+    extended_entities: {
+        media: [{
+            media_url: String,
+            typeof: String
+        }]
+    }
 });
 
 //define the schema for the data
@@ -166,6 +167,8 @@ mongoose.model('twitterSimulationModel', twitterSimulationSchema);
 
 
 
+//Below is an example of the root level tweet. Some fields have been omited in the model but can easily be added by refering to this documentation
+//https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object.html
 
 
 /*

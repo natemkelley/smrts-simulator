@@ -23,8 +23,8 @@ function sendTestSimulation() {
             created_at: randomDate(new Date(2012, 0, 1), new Date()),
             id_str: Math.floor(Math.random() * 100000000 + 1),
             retweet_count: Math.floor(Math.random() * 100),
-            favorite_count: Math.floor(Math.random() * 100),
-            favorited: Math.floor(Math.random()),
+            favorite_count: Math.floor(Math.random() * 1000),
+            favorited:  Math.random() >= 0.5,
             text: "this is the text for the tweet",
             description: "this is a description",
             followers_count: Math.floor(Math.random() * 1000),
@@ -34,10 +34,10 @@ function sendTestSimulation() {
             name: "user name",
             screen_name: "twitterHandle",
             media_url: "https://pbs.twimg.com/profile_images/1092100446586630146/3uFY0wpD_400x400.jpg",
-            type: "image",
-            verified: Math.floor(Math.random()),
+            typeof: "image",
+            verified:  Math.random() >= 0.5,
             coordinates: [-75.14310264, 40.05701649],
-            reply: "I don't know what to do for this field"
+            replyy: "I don't know what to do for this field"
         }
 
         return tweet

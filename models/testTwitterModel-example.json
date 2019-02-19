@@ -24,12 +24,6 @@
         "urls": [],
         "hashtags": []
     },
-    extended_entities: {
-        media: [{
-            media_url: 'String',
-            type: 'image'
-        }]
-    },
     "contributors": null,
     "retweeted": false,
     "in_reply_to_user_id_str": null,
@@ -147,5 +141,11 @@
     },
     "id": 54691802283900930,
     "coordinates": null,
-    "geo": null
+    "geo": null,
+    extended_entities: {
+        media: [{
+            media_url: 'String',
+            typeof: 'image'
+        }]
+    }
 }
