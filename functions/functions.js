@@ -158,7 +158,6 @@ exports.processUpload = function (data) {
             }
         });
 
-
         return returnVal
 
         function removeDuplicatesFromArray(array) {
@@ -166,7 +165,6 @@ exports.processUpload = function (data) {
                 return array.indexOf(item) >= index;
             });
         }
-
     }
 
     //ensures that certain fields are corrent (numbers, arrays, strings)
