@@ -1,6 +1,7 @@
 var fs = require('fs');
 var colors = require('colors/safe');
 var database = require('../functions/database')
+var functions = require('../functions/functions')
 var sockets = require('../routes/socket')
 var csv = require('csvtojson')
 
@@ -8,11 +9,11 @@ var csv = require('csvtojson')
 exports.processUpload = function (data) {
     console.log('\nreceived upload'.green);
 
-    var goodToGo = checkHeaders(data);
+    var goodToGo = checkHeadersAndFields(data);
 
     if (goodToGo.status) {
         console.log(colors.green('the headers are good'));
-        var sim = buildSimulation(ensureFieldsAreCorrect(data));
+        var sim = buildSimulation(formatFields(data));
         database.saveTwitterSimulation(sim);
     } else {
         console.log(colors.red('the headers are bad'));
@@ -60,13 +61,16 @@ exports.processUpload = function (data) {
     }
 
     //checks for required fields from upload
-    function checkHeaders(receivedSim) {
+    function checkHeadersAndFields(receivedSim) {
         var returnVal = {
             status: true
         };
 
         var missingHeader = [];
+        var missingFields = [];
+        var tweetCounter = 0;
 
+        //check for existing headers
         receivedSim.forEach(function (element) {
             if (!element.hasOwnProperty('created_at')) {
                 missingHeader.push('created_at')
@@ -136,13 +140,28 @@ exports.processUpload = function (data) {
                 missingHeader.push('reply');
                 returnVal.status = false;
             }
+
+            tweetCounter++;
+        });
+        returnVal.missingHeader = removeDuplicatesFromArray(missingHeader)
+
+        //return that it is missing a header
+        if (!returnVal.status) {
+            return returnVal
+        }
+
+        //check for populated fields
+        receivedSim.forEach(function (element) {
+            if (element.created_at.length < 2) {
+                returnVal.status = false;
+                returnVal.missingFields = ['Blank Fields'];
+            }
         });
 
-        returnVal.missingHeader = removeDuplicatesFromHeaderArray(missingHeader)
 
         return returnVal
 
-        function removeDuplicatesFromHeaderArray(array) {
+        function removeDuplicatesFromArray(array) {
             return array.filter(function (item, index) {
                 return array.indexOf(item) >= index;
             });
@@ -150,19 +169,17 @@ exports.processUpload = function (data) {
 
     }
 
-
-}
-
-//create a simulation test
-exports.testTweetSimulation = function (data) {
-    var tweet = JSON.parse(fs.readFileSync('models/usableTwitterModel.json', 'utf8'));
-    var tweetArray = [];
-
-    for (var i = 0; i < 50; i++) {
-        tweetArray.push(tweet);
+    //ensures that certain fields are corrent (numbers, arrays, strings)
+    function formatFields(jsonArray) {
+        var returnArray = [];
+        jsonArray.forEach(function (tweet) {
+            tweet.following = tweet.following.split(',');
+            tweet.coordinates = tweet.coordinates.split(',');
+            returnArray.push(tweet)
+        })
+        return jsonArray
     }
 
-    return tweetArray
 }
 
 //reveives data from socket and sends it to an json format
@@ -173,21 +190,14 @@ exports.receiveUpload = function (data) {
     if (extension.includes('csv')) {
         console.log(extension);
         csvToJSON(fileLocation).then((jsonArray) => {
-            ensureFieldsAreCorrect(jsonArray) //NOTHING HAPPENS AFTER THAT
+            functions.processUpload(jsonArray) //NOTHING HAPPENS AFTER THAT
         });;
     } else {
         console.log(colors.red('wrong file extension'));
         removeFile(fileLocation)
     }
 
-
-    //ensures that certain fields are corrent (numbers, arrays, strings)
-    function ensureFieldsAreCorrect(jsonArray) {
-        console.log(jsonArray);
-        return jsonArray
-    }
 }
-
 
 //promise that returns a json array
 function csvToJSON(fileLocation) {
@@ -210,4 +220,16 @@ function removeFile(fileLocation) {
         if (err) throw err;
         console.log('successfully deleted ' + fileLocation);
     });
+}
+
+//create a simulation test
+exports.testTweetSimulation = function (data) {
+    var tweet = JSON.parse(fs.readFileSync('models/usableTwitterModel.json', 'utf8'));
+    var tweetArray = [];
+
+    for (var i = 0; i < 50; i++) {
+        tweetArray.push(tweet);
+    }
+
+    return tweetArray
 }
