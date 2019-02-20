@@ -12,8 +12,7 @@ exports.processUpload = function (data) {
 
     if (goodToGo.status) {
         console.log(colors.green('the headers are good'));
-        data = ensureFormatAreCorrect(data);
-        var sim = buildSimulation(data);
+        var sim = buildSimulation(ensureFieldsAreCorrect(data));
         database.saveTwitterSimulation(sim);
     } else {
         console.log(colors.red('the headers are bad'));
@@ -152,7 +151,7 @@ exports.processUpload = function (data) {
     }
 
     //ensures that certain fields are corrent (numbers, arrays, strings)
-    function ensureFormatAreCorrect(jsonArray) {
+    function ensureFieldsAreCorrect(jsonArray) {
         console.log(jsonArray);
         return jsonArray
     }
@@ -178,7 +177,7 @@ exports.receiveUpload = function (data) {
     if (extension.includes('csv')) {
         console.log(extension);
         csvToJSON(fileLocation).then((jsonArray) => {
-            ensureFormatAreCorrect(jsonArray)
+            ensureFieldsAreCorrect(jsonArray)
         });;
     } else {
         console.log(colors.red('wrong file extension'));
