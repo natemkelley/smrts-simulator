@@ -4,7 +4,7 @@ var database = require('../functions/database')
 var sockets = require('../routes/socket')
 var csv = require('csvtojson')
 
-//check headers, place data into model, send confirmation
+//receive json from receive uploaded, check headers, place into model, send confirmation
 exports.processUpload = function (data) {
     console.log('\nreceived upload'.green);
 

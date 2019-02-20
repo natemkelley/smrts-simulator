@@ -76,13 +76,15 @@ function emitListOfSims(io) {
     io.emit('get list of sims', returnValue);
 }
 
+//send an array of tweets to the room
 function emitSendTweet(io, room) {
     console.log('send tweet');
 
-    var returnValue = functions.testTweetSimulation();
+    var returnValue = 'this is a tweet';
     io.to(room).emit('tweet', returnValue);
 }
 
+//confirm to user that a room has been joined
 function emitSendJoinRoom(io, room) {
     console.log('emit join room');
 
@@ -90,22 +92,26 @@ function emitSendJoinRoom(io, room) {
     io.to(room).emit('join room', returnValue);
 }
 
+//reset front end after fast forward or rewind
 function resetTweets(io, room) {
     var returnValue = room;
 
     io.to(room).emit('reset tweet', returnValue);
 }
 
+//emit a list of rooms you can join
 function emitListOfRooms(io) {
     var returnValue = ["room one", "room two", "room three"];
 
     io.emit('get list of rooms', returnValue);
 }
 
+//confirm to user that a room has been created
 function emitCreateRoom(io, room) {
     io.emit('create room', room);
 }
 
+//confirm to user whether the upload worked (status:true) or failed (status: false). 
 function emitUploadStatus(io, status) {
     io.emit('upload status', status);
 }
