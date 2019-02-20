@@ -2,6 +2,7 @@ var fs = require('fs');
 var colors = require('colors/safe');
 var database = require('../functions/database')
 var sockets = require('../routes/socket')
+var csv = require('csvtojson')
 
 
 exports.processUpload = function (data) {
@@ -159,6 +160,43 @@ exports.testTweetSimulation = function (data) {
     return tweetArray
 }
 
-exports.testing123 = function () {
-    console.log('testing123')
+exports.receiveUpload = function (data) {
+    var fileLocation = data.file.pathName;
+    var extension = fileLocation.substr(fileLocation.length - 4);
+
+    console.log(colors.cyan(data.file));
+
+
+    if (extension.includes('csv')) {
+        console.log(extension);
+        csvToJSON(fileLocation).then((jsonArray) => {
+            console.log(jsonArray);
+        });;
+    } else {
+        console.log(colors.red('wrong file extension'));
+        removeFile(fileLocation)
+    }
+}
+
+
+//promise that returns a json array
+function csvToJSON(fileLocation) {
+    return new Promise((resolve, reject) => {
+        csv()
+            .on('error', (err) => {
+                console.log(colors.red(err));
+            })
+            .fromFile(fileLocation)
+            .then((jsonObj) => {
+                removeFile(fileLocation);
+                resolve(jsonObj);
+            })
+    })
+}
+
+function removeFile(fileLocation) {
+    fs.unlink(fileLocation, (err) => {
+        if (err) throw err;
+        console.log('successfully deleted ' + fileLocation);
+    });
 }

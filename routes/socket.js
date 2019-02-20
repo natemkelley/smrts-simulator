@@ -58,6 +58,7 @@ module.exports = function (io) {
         uploader.listen(socket);
         uploader.on("saved", function (event) {
             console.log(colors.green('saved'));
+            functions.receiveUpload(event)
         });
         uploader.on("error", function (event) {
             console.log("Error from uploader", event);
@@ -109,6 +110,7 @@ function emitCreateRoom(io, room) {
 function emitUploadStatus(io, status) {
     io.emit('upload status', status);
 }
+
 
 /*********NOTES ON HOW TO USE THIS FILE******************/
 //https://www.npmjs.com/package/socketio-file-upload

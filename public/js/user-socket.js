@@ -4,6 +4,9 @@ var room = "default room";
 /*UPLOADER*/
 var uploader = new SocketIOFileUpload(socket);
 uploader.listenOnInput(document.getElementById("siofu_input"));
+uploader.addEventListener("start", function (event) {
+    event.file.meta.hello = "world";
+});
 uploader.addEventListener("progress", function (event) {
     var percent = event.bytesLoaded / event.file.size * 100;
     console.log("File is", percent.toFixed(2), "percent loaded");
