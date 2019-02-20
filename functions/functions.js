@@ -35,7 +35,7 @@ exports.processUpload = function (data) {
 
     //create a tweet from the tweet model and returns new tweet
     function buildTweet(tweet) {
-        var tweetForm = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
+        var tweetForm = JSON.parse(fs.readFileSync('models/usableTwitterModel.json', 'utf8'));
 
         tweetForm.coordinates = tweet.coordinates;
         tweetForm.created_at = tweet.created_at;
@@ -155,7 +155,7 @@ exports.processUpload = function (data) {
 
 //create a simulation test
 exports.testTweetSimulation = function (data) {
-    var tweet = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
+    var tweet = JSON.parse(fs.readFileSync('models/usableTwitterModel.json', 'utf8'));
     var tweetArray = [];
 
     for (var i = 0; i < 50; i++) {
