@@ -4,7 +4,7 @@ var database = require('../functions/database')
 var sockets = require('../routes/socket')
 var csv = require('csvtojson')
 
-//receive json from receive uploaded, check headers, place into model, send confirmation
+//receive json with valid fields from receive uploaded, check headers, place into model, send confirmation
 exports.processUpload = function (data) {
     console.log('\nreceived upload'.green);
 
@@ -150,11 +150,7 @@ exports.processUpload = function (data) {
 
     }
 
-    //ensures that certain fields are corrent (numbers, arrays, strings)
-    function ensureFieldsAreCorrect(jsonArray) {
-        console.log(jsonArray);
-        return jsonArray
-    }
+
 }
 
 //create a simulation test
@@ -177,11 +173,18 @@ exports.receiveUpload = function (data) {
     if (extension.includes('csv')) {
         console.log(extension);
         csvToJSON(fileLocation).then((jsonArray) => {
-            ensureFieldsAreCorrect(jsonArray)
+            ensureFieldsAreCorrect(jsonArray) //NOTHING HAPPENS AFTER THAT
         });;
     } else {
         console.log(colors.red('wrong file extension'));
         removeFile(fileLocation)
+    }
+
+
+    //ensures that certain fields are corrent (numbers, arrays, strings)
+    function ensureFieldsAreCorrect(jsonArray) {
+        console.log(jsonArray);
+        return jsonArray
     }
 }
 
