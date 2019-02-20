@@ -20,8 +20,8 @@ exports.processUpload = function (data) {
         sockets.sendUploadStatus(goodToGo)
     }
 
-    /*functions used to process uploaded simulations*/
 
+    //create a simulation with uploaded data and twitter model
     function buildSimulation(receivedSim) {
         var simulationArray = [];
 
@@ -34,6 +34,7 @@ exports.processUpload = function (data) {
         return simulationArray
     }
 
+    //create a tweet from the tweet model and returns new tweet
     function buildTweet(tweet) {
         var tweetForm = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
 
@@ -59,6 +60,7 @@ exports.processUpload = function (data) {
         return tweetForm
     }
 
+    //checks for required fields from upload
     function checkHeaders(receivedSim) {
         var returnVal = {
             status: true
@@ -148,6 +150,12 @@ exports.processUpload = function (data) {
         }
 
     }
+
+    //ensures that certain fields are corrent (numbers, arrays, strings)
+    function ensureFormatAreCorrect(jsonArray) {
+        console.log(jsonArray);
+        return jsonArray
+    }
 }
 
 //create a simulation test
@@ -200,11 +208,4 @@ function removeFile(fileLocation) {
         if (err) throw err;
         console.log('successfully deleted ' + fileLocation);
     });
-}
-
-//ensures that certain fields are corrent (numbers, arrays, strings)
-function ensureFormatAreCorrect(jsonArray) {
-    console.log(jsonArray);
-
-    return jsonArray
 }
