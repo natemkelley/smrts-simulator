@@ -1,7 +1,10 @@
 var socket = io();
 var room = "default room";
 
-/*UPLOADER*/
+//UPLOADER
+//start will trigger when the upload has started. Meta data is added at this stage
+//progress will trigger whenever the socket sends back a progress indicator
+//complete will trigger when the socket has successfully uploaded the file
 var uploader = new SocketIOFileUpload(socket);
 uploader.listenOnInput(document.getElementById("siofu_input"));
 uploader.addEventListener("start", function (event) {
@@ -13,7 +16,6 @@ uploader.addEventListener("progress", function (event) {
 });
 uploader.addEventListener("complete", function (event) {
     console.log(event.success);
-    console.log(event.file);
 });
 
 /************LISTENER FUNCTIONS FOR SOCKET.IO*********/
