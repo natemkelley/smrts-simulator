@@ -69,7 +69,7 @@ module.exports = function (io) {
     }
 }
 
-
+//emit a list of uploaded simulation names
 function emitListOfSims(io) {
     console.log('emit list of sims');
     var returnValue = ["sim one", "sim two", "sim three"];
