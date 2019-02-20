@@ -4,7 +4,7 @@ var database = require('../functions/database')
 var sockets = require('../routes/socket')
 var csv = require('csvtojson')
 
-
+//check headers, place data into model, send confirmation
 exports.processUpload = function (data) {
     console.log('\nreceived upload'.green);
 
@@ -149,6 +149,7 @@ exports.processUpload = function (data) {
     }
 }
 
+//create a simulation test
 exports.testTweetSimulation = function (data) {
     var tweet = JSON.parse(fs.readFileSync('models/testTwitterModel.json', 'utf8'));
     var tweetArray = [];
@@ -160,6 +161,7 @@ exports.testTweetSimulation = function (data) {
     return tweetArray
 }
 
+//reveives data from socket and send it to an json format
 exports.receiveUpload = function (data) {
     var fileLocation = data.file.pathName;
     var extension = fileLocation.substr(fileLocation.length - 4);
@@ -194,6 +196,7 @@ function csvToJSON(fileLocation) {
     })
 }
 
+//remove file after upload
 function removeFile(fileLocation) {
     fs.unlink(fileLocation, (err) => {
         if (err) throw err;

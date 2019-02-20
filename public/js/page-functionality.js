@@ -3,7 +3,6 @@ $("button").click(function () {
 });
 
 
-
 function sendTestSimulation() {
     uploadSimulation(createSimulation());
 

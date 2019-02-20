@@ -9,7 +9,6 @@ module.exports = function (io) {
         var room = null;
 
         console.log('\nuser socket connected');
-
         socket.on('get list of sims', function (data) {
             emitListOfSims(io, room)
         });
