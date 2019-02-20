@@ -12,6 +12,7 @@ exports.processUpload = function (data) {
 
     if (goodToGo.status) {
         console.log(colors.green('the headers are good'));
+        data = ensureFormatAreCorrect(data);
         var sim = buildSimulation(data);
         database.saveTwitterSimulation(sim);
     } else {
@@ -161,18 +162,15 @@ exports.testTweetSimulation = function (data) {
     return tweetArray
 }
 
-//reveives data from socket and send it to an json format
+//reveives data from socket and sends it to an json format
 exports.receiveUpload = function (data) {
     var fileLocation = data.file.pathName;
     var extension = fileLocation.substr(fileLocation.length - 4);
 
-    console.log(colors.cyan(data.file));
-
-
     if (extension.includes('csv')) {
         console.log(extension);
         csvToJSON(fileLocation).then((jsonArray) => {
-            console.log(jsonArray);
+            ensureFormatAreCorrect(jsonArray)
         });;
     } else {
         console.log(colors.red('wrong file extension'));
@@ -202,4 +200,11 @@ function removeFile(fileLocation) {
         if (err) throw err;
         console.log('successfully deleted ' + fileLocation);
     });
+}
+
+//ensures that certain fields are corrent (numbers, arrays, strings)
+function ensureFormatAreCorrect(jsonArray) {
+    console.log(jsonArray);
+
+    return jsonArray
 }
