@@ -52,6 +52,7 @@ module.exports = function (io) {
         });
         
         //uploader information
+        //https://www.npmjs.com/package/socketio-file-upload#instanceprompt
         var uploader = new siofu();
         uploader.dir = "uploads";
         uploader.listen(socket);
