@@ -1,6 +1,10 @@
 var socket = io();
 var room = "default room";
 
+/*UPLOADER*/
+var uploader = new SocketIOFileUpload(socket);
+uploader.listenOnInput(document.getElementById("siofu_input"));
+
 /************LISTENER FUNCTIONS FOR SOCKET.IO*********/
 socket.on('connect', function () {
     console.log('socket connected');

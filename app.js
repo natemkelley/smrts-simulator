@@ -24,8 +24,8 @@ app.use(bodyParser.json());
 
 //socket.io
 var io = require('socket.io')(server);
-//var SocketIOFileUpload = require("socketio-file-upload");
-//app.use(SocketIOFileUpload.router)
+var siofu = require("socketio-file-upload");
+app.use(siofu.router)
 var socket = require('./routes/socket')(io);
 
 

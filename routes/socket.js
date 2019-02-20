@@ -1,8 +1,10 @@
 var functions = require('../functions/functions');
+var siofu = require("socketio-file-upload");
+var fs = require('fs');
+var colors = require('colors');
 
 //establish a socket connection with the server
 module.exports = function (io) {
-    fallbackIO = io
     io.on('connection', function (socket) {
         var room = null;
 
@@ -43,13 +45,22 @@ module.exports = function (io) {
         socket.on('upload simulation', function (data) {
             functions.processUpload(data);
         });
-
         socket.on('disconnect', function () {
             socket.leave(room, function () {
                 console.log('socket leaving room');
             });
         });
-
+        
+        //uploader information
+        var uploader = new siofu();
+        uploader.dir = "uploads";
+        uploader.listen(socket);
+        uploader.on("saved", function (event) {
+            console.log(colors.green('saved'));
+        });
+        uploader.on("error", function (event) {
+            console.log("Error from uploader", event);
+        });
     });
 
     module.exports.sendUploadStatus = function (status) {
