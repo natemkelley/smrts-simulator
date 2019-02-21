@@ -5,18 +5,17 @@ var functions = require('../functions/functions')
 var sockets = require('../routes/socket')
 var csv = require('csvtojson')
 
-//receive json with valid fields from receive uploaded, check headers, place into model, send confirmation
+//receive json with valid fields from receiveUploade function, check headers, place into model, send confirmation
 exports.processUpload = function (data) {
     console.log('\nreceived upload'.green);
 
     var goodToGo = checkHeadersAndFields(data);
-
     if (goodToGo.status) {
         console.log(colors.green('the headers are good'));
         var sim = buildSimulation(formatFields(data));
         database.saveTwitterSimulation(sim);
     } else {
-        console.log(colors.red('the headers are bad'));
+        console.log(colors.red('something inside the .csv is wrong'));
         sockets.sendUploadStatus(goodToGo)
     }
 
@@ -66,87 +65,67 @@ exports.processUpload = function (data) {
             status: true
         };
 
-        var missingHeader = [];
-        var missingFields = [];
-        var tweetCounter = 0;
+        var problem = [];
 
         //check for existing headers
         receivedSim.forEach(function (element) {
             if (!element.hasOwnProperty('created_at')) {
-                missingHeader.push('created_at')
-                returnVal.status = false;
+                problem.push('created_at')
             }
             if (!element.hasOwnProperty('id_str')) {
-                missingHeader.push('id_str')
-                returnVal.status = false;
+                problem.push('id_str')
             }
             if (!element.hasOwnProperty('retweet_count')) {
-                missingHeader.push('retweet_count')
-                returnVal.status = false;
+                problem.push('retweet_count')
             }
             if (!element.hasOwnProperty('favorite_count')) {
-                missingHeader.push('favorite_count')
-                returnVal.status = false;
+                problem.push('favorite_count')
             }
             if (!element.hasOwnProperty('favorited')) {
-                missingHeader.push('favorited');
-                returnVal.status = false;
+                problem.push('favorited');
             }
             if (!element.hasOwnProperty('text')) {
-                missingHeader.push('text');
-                returnVal.status = false;
+                problem.push('text');
             }
             if (!element.hasOwnProperty('description')) {
-                missingHeader.push('description');
-                returnVal.status = false;
+                problem.push('description');
             }
             if (!element.hasOwnProperty('followers_count')) {
-                missingHeader.push('followers_count');
-                returnVal.status = false;
+                problem.push('followers_count');
             }
             if (!element.hasOwnProperty('following')) {
-                missingHeader.push('following');
-                returnVal.status = false;
+                problem.push('following');
             }
             if (!element.hasOwnProperty('location')) {
-                missingHeader.push('location');
-                returnVal.status = false;
+                problem.push('location');
             }
             if (!element.hasOwnProperty('name')) {
-                missingHeader.push('name');
-                returnVal.status = false;
+                problem.push('name');
             }
             if (!element.hasOwnProperty('screen_name')) {
-                missingHeader.push('screen_name');
-                returnVal.status = false;
+                problem.push('screen_name');
             }
             if (!element.hasOwnProperty('media_url')) {
-                missingHeader.push('media_url');
-                returnVal.status = false;
+                problem.push('media_url');
             }
             if (!element.hasOwnProperty('typeof')) {
-                missingHeader.push('typeof');
-                returnVal.status = false;
+                problem.push('typeof');
             }
             if (!element.hasOwnProperty('verified')) {
-                missingHeader.push('verified');
-                returnVal.status = false;
+                problem.push('verified');
             }
             if (!element.hasOwnProperty('coordinates')) {
-                missingHeader.push('coordinates');
-                returnVal.status = false;
+                problem.push('coordinates');
             }
             if (!element.hasOwnProperty('reply')) {
-                missingHeader.push('reply');
-                returnVal.status = false;
+                problem.push('reply');
             }
-
-            tweetCounter++;
         });
-        returnVal.missingHeader = removeDuplicatesFromArray(missingHeader)
+        returnVal.problem = removeDuplicatesFromArray(problem)
 
         //return that it is missing a header
-        if (!returnVal.status) {
+        if (problem.length > 0) {
+            returnVal.status = false;
             return returnVal
         }
 
@@ -154,7 +133,7 @@ exports.processUpload = function (data) {
         receivedSim.forEach(function (element) {
             if (element.created_at.length < 2) {
                 returnVal.status = false;
-                returnVal.missingFields = ['Blank Fields'];
+                returnVal.problem = ['Blank Fields'];
             }
         });
 
@@ -171,8 +150,13 @@ exports.processUpload = function (data) {
     function formatFields(jsonArray) {
         var returnArray = [];
         jsonArray.forEach(function (tweet) {
-            tweet.following = tweet.following.split(',');
-            tweet.coordinates = tweet.coordinates.split(',');
+
+            if (!Array.isArray(tweet.following)) {
+                tweet.following = tweet.following.split(',');
+            }
+            if (!Array.isArray(tweet.coordinates)) {
+                tweet.coordinates = tweet.coordinates.split(',');
+            }
             returnArray.push(tweet)
         })
         return jsonArray
@@ -180,7 +164,7 @@ exports.processUpload = function (data) {
 
 }
 
-//reveives data from socket and sends it to an json format
+//reveives data from socket, checks format, sends it to be processed or alerts user that format is wrong
 exports.receiveUpload = function (data) {
     var fileLocation = data.file.pathName;
     var extension = fileLocation.substr(fileLocation.length - 4);
@@ -192,24 +176,27 @@ exports.receiveUpload = function (data) {
         });;
     } else {
         console.log(colors.red('wrong file extension'));
-        removeFile(fileLocation)
+        removeFile(fileLocation);
+        sockets.sendUploadStatus({
+            status: false,
+            problem: 'not a .csv file'
+        });
     }
 
-}
-
-//promise that returns a json array
-function csvToJSON(fileLocation) {
-    return new Promise((resolve, reject) => {
-        csv()
-            .on('error', (err) => {
-                console.log(colors.red(err));
-            })
-            .fromFile(fileLocation)
-            .then((jsonObj) => {
-                removeFile(fileLocation);
-                resolve(jsonObj);
-            })
-    })
+    //promise that returns a json array
+    function csvToJSON(fileLocation) {
+        return new Promise((resolve, reject) => {
+            csv()
+                .on('error', (err) => {
+                    console.log(colors.red(err));
+                })
+                .fromFile(fileLocation)
+                .then((jsonObj) => {
+                    removeFile(fileLocation);
+                    resolve(jsonObj);
+                })
+        })
+    }
 }
 
 //remove file after upload

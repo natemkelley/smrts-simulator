@@ -1,5 +1,5 @@
 $("button").click(function () {
-    sendTestSimulation();
+    //sendTestSimulation();
 });
 
 

@@ -6,16 +6,23 @@ var room = "default room";
 //progress will trigger whenever the socket sends back a progress indicator
 //complete will trigger when the socket has successfully uploaded the file
 var uploader = new SocketIOFileUpload(socket);
-uploader.listenOnInput(document.getElementById("siofu_input"));
+//uploader.listenOnInput(document.getElementById("siofu_input"));
+uploader.listenOnSubmit(document.getElementById("my_button"), document.getElementById("siofu_input"));
+
 uploader.addEventListener("start", function (event) {
     event.file.meta.hello = "world";
+    $('.progress').fadeIn();
 });
 uploader.addEventListener("progress", function (event) {
     var percent = event.bytesLoaded / event.file.size * 100;
+    $('.determinate').css({
+        "width": percent + "%"
+    });
     console.log("File is", percent.toFixed(2), "percent loaded");
 });
 uploader.addEventListener("complete", function (event) {
-    console.log(event.success);
+    console.log(event);
+    $('.progress').fadeOut('slow');
 });
 
 /************LISTENER FUNCTIONS FOR SOCKET.IO*********/
