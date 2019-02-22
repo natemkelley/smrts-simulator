@@ -210,7 +210,6 @@ exports.receiveUpload = function (data) {
 function removeFile(fileLocation) {
     fs.unlink(fileLocation, (err) => {
         if (err) throw err;
-        console.log('successfully deleted ' + fileLocation);
     });
 }
 
