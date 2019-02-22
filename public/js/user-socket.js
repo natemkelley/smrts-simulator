@@ -1,17 +1,16 @@
 var socket = io();
 var room = "default room";
 
+
 //UPLOADER
 //start will trigger when the upload has started. Meta data is added at this stage
 //progress will trigger whenever the socket sends back a progress indicator
 //complete will trigger when the socket has successfully uploaded the file
 var uploader = new SocketIOFileUpload(socket);
-//uploader.listenOnInput(document.getElementById("siofu_input"));
 uploader.listenOnSubmit(document.getElementById("my_button"), document.getElementById("siofu_input"));
-
 uploader.addEventListener("start", function (event) {
     event.file.meta.hello = "world";
-    $('.progress').fadeIn();
+    $('.progress').show();
 });
 uploader.addEventListener("progress", function (event) {
     var percent = event.bytesLoaded / event.file.size * 100;
@@ -27,15 +26,17 @@ uploader.addEventListener("complete", function (event) {
 
 /************LISTENER FUNCTIONS FOR SOCKET.IO*********/
 socket.on('connect', function () {
-    console.log('socket connected');
+    console.log('%c socket connected ', 'background: #35e51e; color: #708825;');
 
     socket.on('get list of sims', function (data) {
-        console.log('get list of sims')
+        console.log(data)
+    });
+
+    socket.on('get list of rooms', function (data) {
         console.log(data)
     });
 
     socket.on('tweet', function (data) {
-        console.log('tweet')
         console.log(data)
     });
 
@@ -56,13 +57,6 @@ socket.on('connect', function () {
         console.log(data)
     });
 
-    socket.on('get list of rooms', function (data) {
-        console.log('get list of rooms')
-        console.log(data)
-    });
-
-    emitGetListofSims();
-    emitGetListofRooms();
     requestJoinRoom();
     requestCreateRoom();
 });

@@ -208,11 +208,15 @@ function removeFile(fileLocation) {
 }
 
 //create a simulation test
-exports.testTweetSimulation = function (data) {
+exports.testTweets = function (numberOfTweets) {
     var tweet = JSON.parse(fs.readFileSync('models/usableTwitterModel.json', 'utf8'));
     var tweetArray = [];
 
-    for (var i = 0; i < 50; i++) {
+    if (numberOfTweets == null) {
+        numberOfTweets = 1;
+    }
+
+    for (var i = 0; i < numberOfTweets; i++) {
         tweetArray.push(tweet);
     }
 
