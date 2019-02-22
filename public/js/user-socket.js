@@ -20,7 +20,6 @@ uploader.addEventListener("progress", function (event) {
     console.log("File is", percent.toFixed(2), "percent loaded");
 });
 uploader.addEventListener("complete", function (event) {
-    console.log(event);
     $('.progress').fadeOut('slow');
 });
 

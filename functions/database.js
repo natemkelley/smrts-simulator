@@ -29,38 +29,41 @@ var twitterSimulationModel = mongoose.model('twitterSimulationModel');
 var tweetScheme = mongoose.model('tweetModel');
 
 exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim, private, groups) {
-    if (!user) {
-        user = 'default user'
-    }
-    if (!nameOfSim) {
-        nameOfSim = 'simulation_' + Math.floor(Math.random() * 1000000 + 1)
-    }
-    if (!private) {
-        private = false
-    }
-    if (!groups) {
-        groups = []
-    }
+    return new Promise((resolve, reject) => {
+        if (!user) {
+            user = 'default user'
+        }
+        if (!nameOfSim) {
+            nameOfSim = 'simulation_' + Math.floor(Math.random() * 1000000 + 1)
+        }
+        if (!private) {
+            private = false
+        }
+        if (!groups) {
+            groups = []
+        }
 
-    var saveThisTwitterSimulation = new twitterSimulationModel({
-        date: new Date(),
-        user: user,
-        nameOfSim: nameOfSim,
-        type: 'twitter',
-        groups: groups,
-        private: private,
-        simulation: twitterSimulationData
-    });
-    console.log(colors.cyan('preparing to save simulation'));
-    saveThisTwitterSimulation.save(function (err) {
-        if (err) return handleError(err);
-        console.log('testing saved tweet successful'.green);
+        var saveThisTwitterSimulation = new twitterSimulationModel({
+            date: new Date(),
+            user: user,
+            nameOfSim: nameOfSim,
+            type: 'twitter',
+            groups: groups,
+            private: private,
+            simulation: twitterSimulationData
+        });
+        console.log(colors.cyan('preparing to save simulation'));
+        saveThisTwitterSimulation.save(function (err) {
+            if (err) return handleError(err);
+            console.log('testing saved tweet successful'.green);
 
-        var returnVal = {
-            status: true
-        };
-        sockets.sendUploadStatus(returnVal);
-    });
+            var returnVal = {
+                status: true
+            };
+            resolve(returnVal)
+        });
+
+    })
 }
 
 exports.getAllTwitterSimulation = function () {

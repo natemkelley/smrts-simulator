@@ -51,7 +51,7 @@ module.exports = function (io) {
             console.log('rewind', data);
         });
         socket.on('upload simulation', function (data) {
-            functions.processUpload(data);
+            //functions.processUpload(data);
         });
         socket.on('disconnect', function () {
             socket.leave(room, function () {
@@ -70,7 +70,9 @@ module.exports = function (io) {
         uploader.listen(socket);
         uploader.on("saved", function (event) {
             console.log(colors.green('saved'));
-            functions.receiveUpload(event)
+            functions.receiveUpload(event).then((status) => {
+                sendUploadStatus(socket, status)
+            })
         });
         uploader.on("error", function (event) {
             console.log("Error from uploader", event);
@@ -80,7 +82,7 @@ module.exports = function (io) {
         var test = true;
         (function loop() {
             if (true) {
-                var rand = Math.round(Math.floor(Math.random() * 8000) + 3000);
+                var rand = Math.round(Math.floor(Math.random() * 10000) + 5000);
                 setTimeout(function () {
                     var randomNumber = 1;
                     var tweet = functions.testTweets(randomNumber);
@@ -108,7 +110,7 @@ module.exports = function (io) {
 
     //confirm to user that a room has been joined
     function emitConfirmJoinRoom(socket, room) {
-        console.log('emit join room',room);
+        console.log('emit join room', room);
         socket.emit('join room', room);
     }
 
@@ -135,8 +137,8 @@ module.exports = function (io) {
     }
 
     //external use. send status to the user whether the upload worked. json containing problems with upload
-    module.exports.sendUploadStatus = function (status) {
-        emitUploadStatus(io, status)
+    function sendUploadStatus(socket, status) {
+        emitUploadStatus(socket, status)
     }
 }
 
