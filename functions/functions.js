@@ -44,7 +44,7 @@ exports.receiveUpload = function (data) {
         })
     }
 
-    //receive json with valid fields from receiveUploade function, check headers, place into model, send confirmation
+    //promise that receives json with valid fields from receiveUploade function, check headers, place into model, send confirmation
     function processUpload(data) {
         return new Promise((resolve, reject) => {
             console.log('\nreceived upload'.green);

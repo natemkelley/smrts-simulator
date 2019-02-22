@@ -28,6 +28,7 @@ require('../models/twitterModel');
 var twitterSimulationModel = mongoose.model('twitterSimulationModel');
 var tweetScheme = mongoose.model('tweetModel');
 
+//promise that take in twitter simulation information and saves it to mongo
 exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim, private, groups) {
     return new Promise((resolve, reject) => {
         if (!user) {
@@ -66,6 +67,7 @@ exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim
     })
 }
 
+//promise that returns all twitter simulations excluding some information
 exports.getAllTwitterSimulation = function () {
     return new Promise((resolve, reject) => {
         var query = twitterSimulationModel.find({
