@@ -69,14 +69,17 @@ module.exports = function (io) {
         });
 
         //send test tweets
+        var test = true;
         (function loop() {
-            var rand = Math.round(Math.floor(Math.random() * 5000) + 2000);
-            setTimeout(function () {
-                var randomNumber = 1;
-                var tweet = functions.testTweets(randomNumber);
-                emitSendTweet(io, room, tweet);
-                loop();
-            }, rand);
+            if (true) {
+                var rand = Math.round(Math.floor(Math.random() * 5000) + 2000);
+                setTimeout(function () {
+                    var randomNumber = 1;
+                    var tweet = functions.testTweets(randomNumber);
+                    emitSendTweet(io, room, tweet);
+                    loop();
+                }, rand);
+            }
         }());
 
     });
