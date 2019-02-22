@@ -44,10 +44,9 @@ exports.receiveUpload = function (data) {
         })
     }
 
-    //promise that receives json with valid fields from receiveUploade function, check headers, place into model, send confirmation
     function processUpload(data) {
         return new Promise((resolve, reject) => {
-            console.log('\nreceived upload'.green);
+            console.log('\nreceived upload'.cyan);
             var goodToGo = checkHeadersAndFields(data);
             if (goodToGo.status) {
                 console.log(colors.green('the headers are good'));
@@ -65,7 +64,7 @@ exports.receiveUpload = function (data) {
         function buildSimulation(receivedSim) {
             var simulationArray = [];
 
-            console.log('\nbuilding simulation'.cyan);
+            console.log('building simulation'.cyan);
             receivedSim.forEach(function (tweet) {
                 var newTweet = buildTweet(tweet);
                 simulationArray.push(newTweet)

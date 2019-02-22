@@ -56,7 +56,7 @@ exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim
         console.log(colors.cyan('preparing to save simulation'));
         saveThisTwitterSimulation.save(function (err) {
             if (err) return handleError(err);
-            console.log('testing saved tweet successful'.green);
+            console.log('saved tweet saved successfully'.green);
 
             var returnVal = {
                 status: true
