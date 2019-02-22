@@ -143,6 +143,8 @@ module.exports = function (io) {
 }
 
 
+/*Assume a usable simulation*/
+
 /*********NOTES ON HOW TO USE THIS FILE******************/
 //https://www.npmjs.com/package/socketio-file-upload
 //https://socket.io/docs/emit-cheatsheet/
