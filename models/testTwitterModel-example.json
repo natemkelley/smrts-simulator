@@ -142,10 +142,10 @@
     "id": 54691802283900930,
     "coordinates": null,
     "geo": null,
-    extended_entities: {
-        media: [{
-            media_url: 'String',
-            typeof: 'image'
+    "extended_entities": {
+        "media": [{
+            "media_url": "String",
+            "typeof": "image"
         }]
     }
 }
