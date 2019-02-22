@@ -104,7 +104,6 @@ exports.receiveUpload = function (data) {
             var returnVal = {
                 status: true
             };
-
             var problem = [];
 
             //check for existing headers
