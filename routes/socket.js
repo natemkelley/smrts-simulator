@@ -10,30 +10,33 @@ module.exports = function (io) {
     //listener functions for the server
     io.on('connection', function (socket) {
         var room = null;
+        var allRooms = ['default room'];
 
         //when someone is connected send these functions
         emitListOfSims(io);
-        emitListOfRooms(io);
+        emitListOfRooms(io, allRooms);
 
         console.log('\nuser socket connected');
         socket.on('get list of sims', function (data) {
-            emitListOfSims(io, room)
+            emitListOfSims(socket, room)
         });
         socket.on('get list of rooms', function (data) {
-            emitListOfRooms(io, room)
+            emitListOfRooms(socket, allRooms)
         });
         socket.on('join room', function (data) {
             console.log('joining room ->', data);
             room = data;
             socket.join(data);
-            emitConfirmJoinRoom(io, room);
+            emitConfirmJoinRoom(socket, room);
         });
         socket.on('create room', function (data) {
             console.log('creating room ->', data);
+            allRooms.push(data);
             room = data;
-            emitCreateRoom(io, room);
-            socket.join(data);
-            emitConfirmJoinRoom(io, room);
+            emitCreateRoom(socket, room);
+            emitListOfRooms(io, allRooms);
+            socket.join(room);
+            emitConfirmJoinRoom(socket, room);
         });
         socket.on('play', function (data) {
             console.log('play', data);
@@ -52,6 +55,10 @@ module.exports = function (io) {
         });
         socket.on('disconnect', function () {
             socket.leave(room, function () {
+                var index = allRooms.indexOf(room);
+                if (index > -1) {
+                    allRooms.splice(index, 1);
+                }
                 console.log('socket leaving room');
             });
         });
@@ -86,10 +93,10 @@ module.exports = function (io) {
     });
 
     //emit a list of uploaded simulation names
-    function emitListOfSims(io) {
+    function emitListOfSims(socket) {
         console.log('emit list of sims');
         database.getAllTwitterSimulation().then((simArray) => {
-            io.emit('get list of sims', simArray);
+            socket.emit('get list of sims', simArray);
         });
     }
 
@@ -100,11 +107,9 @@ module.exports = function (io) {
     }
 
     //confirm to user that a room has been joined
-    function emitConfirmJoinRoom(io, room) {
-        console.log('emit join room');
-
-        var returnValue = room;
-        io.to(room).emit('join room', returnValue);
+    function emitConfirmJoinRoom(socket, room) {
+        console.log('emit join room',room);
+        socket.emit('join room', room);
     }
 
     //reset front end after fast forward or rewind
@@ -115,20 +120,18 @@ module.exports = function (io) {
     }
 
     //emit a list of rooms you can join
-    function emitListOfRooms(io) {
-        var returnValue = ["room one", "room two", "room three"];
-
-        io.emit('get list of rooms', returnValue);
+    function emitListOfRooms(io, allRooms) {
+        io.emit('get list of rooms', allRooms);
     }
 
     //confirm to user that a room has been created
-    function emitCreateRoom(io, room) {
-        io.emit('create room', room);
+    function emitCreateRoom(socket, room) {
+        socket.emit('create room', room);
     }
 
     //confirm to user whether the upload worked (status:true) or failed (status: false). 
-    function emitUploadStatus(io, status) {
-        io.emit('upload status', status);
+    function emitUploadStatus(socket, status) {
+        socket.emit('upload status', status);
     }
 
     //external use. send status to the user whether the upload worked. json containing problems with upload
