@@ -1,4 +1,5 @@
 var functions = require('../functions/functions');
+var database = require('../functions/database');
 var siofu = require("socketio-file-upload");
 var colors = require('colors');
 var request = require("request");
@@ -72,7 +73,7 @@ module.exports = function (io) {
         var test = true;
         (function loop() {
             if (true) {
-                var rand = Math.round(Math.floor(Math.random() * 5000) + 2000);
+                var rand = Math.round(Math.floor(Math.random() * 8000) + 3000);
                 setTimeout(function () {
                     var randomNumber = 1;
                     var tweet = functions.testTweets(randomNumber);
@@ -87,8 +88,9 @@ module.exports = function (io) {
     //emit a list of uploaded simulation names
     function emitListOfSims(io) {
         console.log('emit list of sims');
-        var returnValue = ["sim one", "sim two", "sim three"];
-        io.emit('get list of sims', returnValue);
+        database.getAllTwitterSimulation().then((simArray) => {
+            io.emit('get list of sims', simArray);
+        });
     }
 
     //send an array of tweets to the room

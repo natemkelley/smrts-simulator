@@ -173,7 +173,7 @@ exports.receiveUpload = function (data) {
         console.log(extension);
         csvToJSON(fileLocation).then((jsonArray) => {
             functions.processUpload(jsonArray) //NOTHING HAPPENS AFTER THAT
-        });;
+        });
     } else {
         console.log(colors.red('wrong file extension'));
         removeFile(fileLocation);

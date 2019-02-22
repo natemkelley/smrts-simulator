@@ -63,11 +63,16 @@ exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim
     });
 }
 
-function getAllTwitterSimulation() {
-    var query = twitterSimulation.find({});
-    query.then(function (doc) {
-        //removeAll();
-    });
+exports.getAllTwitterSimulation = function () {
+    return new Promise((resolve, reject) => {
+        var query = twitterSimulationModel.find({
+            private: false
+        }, ['-simulation', '-groups']);
+        query.then(function (doc) {
+            resolve(doc)
+            //removeAll();
+        });
+    })
 }
 
 function removeAll() {
@@ -82,5 +87,3 @@ function removeAll() {
 function handleError(err) {
     console.log(colors.red(err));
 }
-
-removeAll();
