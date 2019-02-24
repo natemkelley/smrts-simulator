@@ -50,9 +50,6 @@ module.exports = function (io) {
         socket.on('rewind', function (data) {
             console.log('rewind', data);
         });
-        socket.on('upload simulation', function (data) {
-            //functions.processUpload(data);
-        });
         socket.on('disconnect', function () {
             socket.leave(room, function () {
                 var index = allRooms.indexOf(room);
