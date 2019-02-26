@@ -155,6 +155,7 @@ var twitterSimulationSchema = new mongoose.Schema({
     groups: [String],
     private: Boolean,
     date: Date,
+    views: Number,
     simulation: [tweetSchema]
 });
 
