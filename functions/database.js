@@ -51,6 +51,7 @@ exports.saveTwitterSimulation = function (twitterSimulationData, user, nameOfSim
             type: 'twitter',
             groups: groups,
             private: private,
+            views:0,
             simulation: twitterSimulationData
         });
         console.log(colors.cyan('preparing to save simulation'));
