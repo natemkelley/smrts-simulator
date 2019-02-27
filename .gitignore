@@ -5526,3 +5526,6 @@ node_modules/strip-bom/index.js
 node_modules/strip-bom/license
 node_modules/strip-bom/package.json
 node_modules/strip-bom/readme.md
+node_modules/.bin/csvtojson.cmd
+node_modules/ajv/lib/refs/json-schema-secure.json
+node_modules/ajv/lib/refs/json-schema-secure.json
