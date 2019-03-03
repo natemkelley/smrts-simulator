@@ -23,7 +23,7 @@ exports.receiveUpload = function (data) {
             removeFile(fileLocation);
             var status = {
                 status: false,
-                problem: 'not a .csv file'
+                problem: ['not a .csv file']
             }
             resolve(status)
         }
