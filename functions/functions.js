@@ -10,16 +10,14 @@ exports.receiveUpload = function (data) {
     return new Promise((resolve, reject) => {
         var fileLocation = data.file.pathName;
         var extension = fileLocation.substr(fileLocation.length - 4);
-
+        var fileMetaData = data.file.meta;
         if (extension.includes('csv')) {
-            console.log(extension);
             csvToJSON(fileLocation).then((jsonArray) => {
-                processUpload(jsonArray).then((status) => {
+                processUpload(jsonArray, fileMetaData).then((status) => {
                     resolve(status)
                 })
             });
         } else {
-            console.log(colors.red('wrong file extension'));
             removeFile(fileLocation);
             var status = {
                 status: false,
@@ -44,14 +42,18 @@ exports.receiveUpload = function (data) {
         })
     }
 
-    function processUpload(data) {
+    function processUpload(data, fileMetaData) {
         return new Promise((resolve, reject) => {
-            console.log('\nreceived upload'.cyan);
+            console.log('\nprocessing upload'.cyan);
             var goodToGo = checkHeadersAndFields(data);
             if (goodToGo.status) {
                 console.log(colors.green('the headers are good'));
                 var sim = buildSimulation(formatFields(data));
-                database.saveTwitterSimulation(sim).then((status) => {
+                var simName = fileMetaData.simName;
+                var userName = fileMetaData.userName;
+                var private = false;
+                var groups = [];
+                database.saveTwitterSimulation(sim, userName, simName, private, groups).then((status) => {
                     resolve(status)
                 });
             } else {
