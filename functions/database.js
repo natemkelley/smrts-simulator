@@ -93,3 +93,4 @@ function removeAll() {
 function handleError(err) {
     console.log(colors.red(err));
 }
+

@@ -8,12 +8,13 @@ var request = require("request");
 //establish a socket connection with the server
 module.exports = function (io) {
     //listener functions for the server
+    var allRooms = [];
+
     io.on('connection', function (socket) {
         var room = null;
-        var allRooms = [];
 
         //when someone is connected send these functions
-        emitListOfSims(io);
+        emitListOfSims(socket);
         emitListOfRooms(io, allRooms);
 
         console.log('\nuser socket connected');
@@ -31,8 +32,7 @@ module.exports = function (io) {
         });
         socket.on('create room', function (data) {
             console.log('creating room ->', data);
-            allRooms.push(data);
-            room = data;
+            room = pushNewRoomAndReturnName(data)
             emitCreateRoom(socket, room);
             emitListOfRooms(io, allRooms);
             socket.join(room);
@@ -52,11 +52,8 @@ module.exports = function (io) {
         });
         socket.on('disconnect', function () {
             socket.leave(room, function () {
-                var index = allRooms.indexOf(room);
-                if (index > -1) {
-                    allRooms.splice(index, 1);
-                }
                 console.log('socket leaving room');
+                socketLeaveRoom(room);
             });
         });
 
@@ -68,7 +65,8 @@ module.exports = function (io) {
         uploader.on("saved", function (event) {
             console.log(colors.green('saved'));
             functions.receiveUpload(event).then((status) => {
-                sendUploadStatus(socket, status)
+                sendUploadStatus(socket, status);
+                emitListOfSims(socket);
             })
         });
         uploader.on("error", function (event) {
@@ -84,6 +82,7 @@ module.exports = function (io) {
                     var randomNumber = 1;
                     var tweet = functions.testTweets(randomNumber);
                     emitSendTweet(io, room, tweet);
+                    //emitListOfSims(socket)
                     loop();
                 }, rand);
             }
@@ -93,8 +92,8 @@ module.exports = function (io) {
 
     //emit a list of uploaded simulation names
     function emitListOfSims(socket) {
-        console.log('emit list of sims');
         database.getAllTwitterSimulation().then((simArray) => {
+            console.log('emit list of sims');
             socket.emit('get list of sims', simArray);
         });
     }
@@ -135,8 +134,37 @@ module.exports = function (io) {
 
     //external use. send status to the user whether the upload worked. json containing problems with upload
     function sendUploadStatus(socket, status) {
-        emitUploadStatus(socket, status)
+        emitUploadStatus(socket, status);
     }
+
+    function socketLeaveRoom(roomName) {
+
+    }
+
+    function pushNewRoomAndReturnName(data) {
+        var orignalName = data;
+        var duplicateName = null;
+        var counter = 1;
+
+        for (var index = 0; index < allRooms.length; ++index) {
+            var room = allRooms[index];
+
+            if (room.name == data || room.name == duplicateName) {
+                data = orignalName + " (" + counter + ")";
+                duplicateName = data;
+                index = 0;
+                counter++;
+            }
+        }
+
+        allRooms.push({
+            name: data,
+            time: new Date(),
+            type: 'Twitter'
+        });
+        return data
+    }
+
 }
 
 
