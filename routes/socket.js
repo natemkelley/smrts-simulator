@@ -10,7 +10,7 @@ module.exports = function (io) {
     //listener functions for the server
     io.on('connection', function (socket) {
         var room = null;
-        var allRooms = ['default room'];
+        var allRooms = [];
 
         //when someone is connected send these functions
         emitListOfSims(io);
