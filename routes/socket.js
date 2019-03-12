@@ -30,9 +30,9 @@ module.exports = function (io) {
             socket.join(data);
             emitConfirmJoinRoom(socket, room);
         });
-        socket.on('create room', function (data) {
+        socket.on('create room', function (data, type) {
             console.log('creating room ->', data);
-            room = pushNewRoomAndReturnName(data)
+            room = pushNewRoomAndReturnName(data,type)
             emitCreateRoom(socket, room);
             emitListOfRooms(io, allRooms);
             socket.join(room);
@@ -53,7 +53,9 @@ module.exports = function (io) {
         socket.on('disconnect', function () {
             socket.leave(room, function () {
                 console.log('socket leaving room');
-                socketLeaveRoom(room);
+                socketLeaveRoom(room).then((status) => {
+                    emitListOfRooms(io, allRooms);
+                });
             });
         });
 
@@ -138,10 +140,17 @@ module.exports = function (io) {
     }
 
     function socketLeaveRoom(roomName) {
-
+        return new Promise((resolve, reject) => {
+            for (var index = 0; index < allRooms.length; ++index) {
+                if(allRooms[index].name == roomName){
+                    allRooms.splice(index, 1);
+                }
+            }
+            resolve(true)
+        })
     }
 
-    function pushNewRoomAndReturnName(data) {
+    function pushNewRoomAndReturnName(data,type) {
         var orignalName = data;
         var duplicateName = null;
         var counter = 1;
@@ -160,7 +169,7 @@ module.exports = function (io) {
         allRooms.push({
             name: data,
             time: new Date(),
-            type: 'Twitter'
+            type: type
         });
         return data
     }
