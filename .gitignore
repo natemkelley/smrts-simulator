@@ -5532,3 +5532,14 @@ node_modules/ajv/lib/refs/json-schema-secure.json
 node_modules/ajv/lib/refs/json-schema-secure.json
 node_modules/ajv/lib/refs/json-schema-secure.json
 .DS_Store
+node_modules/anymatch/node_modules/normalize-path/index.js
+node_modules/anymatch/node_modules/normalize-path/LICENSE
+node_modules/anymatch/node_modules/normalize-path/package.json
+node_modules/anymatch/node_modules/normalize-path/README.md
+node_modules/chokidar/types/index.d.ts
+node_modules/mongoose/lib/helpers/schema/cleanPositionalOperators.js
+node_modules/mongoose/lib/options/saveOptions.js
+node_modules/mongoose/node_modules/ms/index.js
+node_modules/mongoose/node_modules/ms/license.md
+node_modules/mongoose/node_modules/ms/package.json
+node_modules/mongoose/node_modules/ms/readme.md

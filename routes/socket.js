@@ -50,10 +50,15 @@ module.exports = function (io) {
         socket.on('rewind', function (data) {
             console.log('rewind', data);
         });
+        socket.on('delete all rooms', function () {
+            removeAllRooms().then((status) => {
+                emitListOfRooms(io, allRooms);
+            });
+        });
         socket.on('disconnect', function () {
             socket.leave(room, function () {
                 console.log('socket leaving room');
-                socketLeaveRoom(room).then((status) => {
+                removeRoom(room).then((status) => {
                     emitListOfRooms(io, allRooms);
                 });
             });
@@ -139,13 +144,22 @@ module.exports = function (io) {
         emitUploadStatus(socket, status);
     }
 
-    function socketLeaveRoom(roomName) {
+    function removeRoom(roomName) {
         return new Promise((resolve, reject) => {
+            var returnVal = false;
             for (var index = 0; index < allRooms.length; ++index) {
                 if(allRooms[index].name == roomName){
                     allRooms.splice(index, 1);
+                    returnVal = true;
                 }
             }
+            resolve(returnVal)
+        })
+    }
+
+    function removeAllRooms() {
+        return new Promise((resolve, reject) => {
+            allRooms = [];
             resolve(true)
         })
     }
