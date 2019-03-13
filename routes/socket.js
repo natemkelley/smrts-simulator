@@ -32,7 +32,7 @@ module.exports = function (io) {
         });
         socket.on('create room', function (data, type) {
             console.log('creating room ->', data);
-            room = pushNewRoomAndReturnName(data,type)
+            room = pushNewRoomAndReturnName(data,type);
             emitCreateRoom(socket, room);
             emitListOfRooms(io, allRooms);
             socket.join(room);
@@ -49,6 +49,14 @@ module.exports = function (io) {
         });
         socket.on('rewind', function (data) {
             console.log('rewind', data);
+        });
+        socket.on('click', function (data) {
+            console.log('click', data);
+            database.getSingleTwitterSimulation(data.nameOfSim)
+                .then(results => {
+                    console.log('emit results');
+                    socket.emit('results', results);
+                })
         });
         socket.on('delete all rooms', function () {
             removeAllRooms().then((status) => {
@@ -83,10 +91,11 @@ module.exports = function (io) {
         //send test tweets
         var test = true;
         (function loop() {
-            if (true) {
+            if (test) {
                 var rand = Math.round(Math.floor(Math.random() * 10000) + 5000);
                 setTimeout(function () {
                     var randomNumber = 1;
+                    // console.log('send tweet');
                     var tweet = functions.testTweets(randomNumber);
                     emitSendTweet(io, room, tweet);
                     //emitListOfSims(socket)
@@ -107,7 +116,7 @@ module.exports = function (io) {
 
     //send an array of tweets to the room
     function emitSendTweet(io, room, tweet) {
-        console.log('send tweet');
+        // console.log('send tweet');
         io.to(room).emit('tweet', tweet);
     }
 

@@ -6,9 +6,7 @@ var path = require('path');
 var app = express();
 const server = require('http').Server(app);
 var fs = require('fs');
-var path = require('path');
 var port = 3000;
-
 
 //connect to the database
 require('./functions/database')
@@ -34,7 +32,7 @@ var routes = require('./routes/api');
 app.use('/api', routes);
 
 //.html files from public will be sent on root
-app.use('/', express.static('public'))
+app.use('/', express.static('public'));
 
 //set render engine as html
 app.set('view engine', 'html');

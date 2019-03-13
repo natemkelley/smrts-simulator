@@ -79,7 +79,19 @@ exports.getAllTwitterSimulation = function () {
             //removeAll();
         });
     })
-}
+};
+
+exports.getSingleTwitterSimulation = async function (name) {
+    return new Promise((resolve, reject) => {
+        let query = twitterSimulationModel.find({
+            nameOfSim: name,
+        }, ['-groups']);
+        query.then(function (doc){
+            console.log('Returned: ',doc);
+            resolve(doc);
+        })
+    })
+};
 
 function removeAll() {
     var removeAll = twitterSimulationModel.deleteMany({});
