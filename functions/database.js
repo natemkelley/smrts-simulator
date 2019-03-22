@@ -87,7 +87,7 @@ exports.getSingleTwitterSimulation = async function (name) {
             nameOfSim: name,
         }, ['-groups']);
         query.then(function (doc){
-            console.log('Returned: ',doc);
+            // console.log('Returned: ',doc);
             resolve(doc);
         })
     })
