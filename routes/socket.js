@@ -123,7 +123,7 @@ module.exports = function (io) {
         function loop(tweets, room, position) {
             // console.log('loop');
             if (position < tweets.length - 1) {
-                let rand = Math.round(Math.floor(Math.random() * 10000) + 5000);
+                let rand = Math.round(Math.floor(Math.random() * 7000) + 1000);
                 setTimeout(function () {
                     let tweet = tweets[position];
                     emitSendTweet(io, room, tweet);
