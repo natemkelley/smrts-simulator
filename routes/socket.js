@@ -121,13 +121,22 @@ module.exports = function (io) {
         }
 
         function loop(tweets, room, position) {
-            // console.log('loop');
             if (position < tweets.length - 1) {
                 let rand = Math.round(Math.floor(Math.random() * 7000) + 1000);
+                rand = 5000;
                 setTimeout(function () {
                     let tweet = tweets[position];
                     emitSendTweet(io, room, tweet);
-                    if(!movedSomething && !paused){
+                    
+                    let roomExists = false
+                    allRooms.forEach(function (roomLoop){
+                        if(roomLoop.name == room ){
+                            roomExists = true
+                        }
+                    })
+                    
+                    if((!movedSomething && !paused) && roomExists){
+                        console.log('loooooooped')
                         loop(tweets, room, ++position);
                     }
                 }, rand);
