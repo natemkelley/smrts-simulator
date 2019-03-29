@@ -42,6 +42,8 @@ exports.receiveUpload = function (data) {
         })
     }
 
+    //make fields inside buildTweet
+
     function processUpload(data, fileMetaData) {
         return new Promise((resolve, reject) => {
             console.log('\nprocessing upload'.cyan);
@@ -97,6 +99,8 @@ exports.receiveUpload = function (data) {
                 media_url: tweet.media_url,
                 typeof: tweet.typeof
             });
+            tweetForm.user.profile_image_url = tweet.profile_image_url;
+            tweetForm.entities.hashtags = tweet.hashtags;
 
             return tweetForm
         }
@@ -161,6 +165,12 @@ exports.receiveUpload = function (data) {
                 if (!element.hasOwnProperty('reply')) {
                     problem.push('reply');
                 }
+                if (!element.hasOwnProperty('hashtags')) {
+                    problem.push('hashtags');
+                }
+                if (!element.hasOwnProperty('profile_image_url')) {
+                    problem.push('profile_image_url');
+                }
             });
             returnVal.problem = removeDuplicatesFromArray(problem)
 
@@ -191,12 +201,14 @@ exports.receiveUpload = function (data) {
         function formatFields(jsonArray) {
             var returnArray = [];
             jsonArray.forEach(function (tweet) {
-
                 if (!Array.isArray(tweet.following)) {
                     tweet.following = tweet.following.split(',');
                 }
                 if (!Array.isArray(tweet.coordinates)) {
                     tweet.coordinates = tweet.coordinates.split(',');
+                }
+                if (!Array.isArray(tweet.hashtags)) {
+                    tweet.hashtags = tweet.hashtags.split(',');
                 }
                 returnArray.push(tweet)
             })
