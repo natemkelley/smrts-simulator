@@ -12,9 +12,11 @@ module.exports = function (io) {
 
     io.on('connection', function (socket) {
         var room = null;
-        let paused;
         let movedSomething = false;
         let position = 0;
+
+        //console.log(socket)
+
         //when someone is connected send these functions
         emitListOfSims(socket);
         emitListOfRooms(io, allRooms);
@@ -29,25 +31,29 @@ module.exports = function (io) {
         socket.on('join room', function (data) {
             console.log('joining room ->', data);
             room = data;
+            console.log('joining room as ' + room);
             socket.join(data);
             emitConfirmJoinRoom(socket, room);
         });
         socket.on('create room', function (data, type) {
             console.log('creating room ->', data);
-            room = pushNewRoomAndReturnName(data,type);
+            room = pushNewRoomAndReturnName(data, type);
+            console.log('creating room as ' + room);
+
             emitCreateRoom(socket, room, data);
             emitListOfRooms(io, allRooms);
             socket.join(room);
             emitConfirmJoinRoom(socket, room, data);
         });
         socket.on('play', function (data) {
-            console.log('play', data);
-            paused = false;
+            let playpauseroom = data
+            togglePlayPauseRoom(playpauseroom)
+
             //TODO:Call loop from here we need room and tweets, position is global
         });
         socket.on('pause', function (data) {
-            console.log('pause', data);
-            paused = true;
+            let playpauseroom = data
+            togglePlayPauseRoom(playpauseroom)
         });
         socket.on('fast forward', function (data) {
             console.log('fast forward', data);
@@ -123,24 +129,45 @@ module.exports = function (io) {
         function loop(tweets, room, position) {
             if (position < tweets.length - 1) {
                 let rand = Math.round(Math.floor(Math.random() * 7000) + 1000);
-                rand = 5000;
                 setTimeout(function () {
                     let tweet = tweets[position];
-                    emitSendTweet(io, room, tweet);
-                    
-                    let roomExists = false
-                    allRooms.forEach(function (roomLoop){
-                        if(roomLoop.name == room ){
-                            roomExists = true
-                        }
-                    })
-                    
-                    if((!movedSomething && !paused) && roomExists){
-                        console.log('loooooooped')
+                    let paused = getPaused(room);
+                    let roomExists = getRoomExists(room);
+
+
+
+                    console.log('looping', room, 'with a status of', paused, 'at the pos', position);
+
+                    if ((!movedSomething && !paused) && roomExists) {
+                        emitSendTweet(io, room, tweet);
                         loop(tweets, room, ++position);
+                    } else {
+                        loop(tweets, room, position)
                     }
                 }, rand);
             }
+        }
+
+        function getRoomExists(roomName) {
+            let roomExists = false
+            allRooms.forEach(function (roomLoop) {
+                if (roomLoop.name == room) {
+                    roomExists = true
+                }
+            })
+
+            return roomExists
+        }
+
+        function getPaused(roomName) {
+            let returnStatus = false;
+            for (var index = 0; index < allRooms.length; ++index) {
+                if (allRooms[index].name == roomName) {
+                    returnStatus = allRooms[index].paused
+                }
+            }
+
+            return returnStatus
         }
 
         //confirm to user that a room has been joined
@@ -197,13 +224,21 @@ module.exports = function (io) {
             return new Promise((resolve, reject) => {
                 var returnVal = false;
                 for (var index = 0; index < allRooms.length; ++index) {
-                    if(allRooms[index].name == roomName){
+                    if (allRooms[index].name == roomName) {
                         allRooms.splice(index, 1);
                         returnVal = true;
                     }
                 }
                 resolve(returnVal)
             })
+        }
+
+        function togglePlayPauseRoom(roomName) {
+            for (var index = 0; index < allRooms.length; ++index) {
+                if (allRooms[index].name == roomName) {
+                    allRooms[index].paused = !allRooms[index].paused;
+                }
+            }
         }
 
         function removeAllRooms() {
@@ -213,15 +248,15 @@ module.exports = function (io) {
             })
         }
 
-        function pushNewRoomAndReturnName(data,type) {
+        function pushNewRoomAndReturnName(data, type) {
             var orignalName = data;
             var duplicateName = null;
             var counter = 1;
 
             for (var index = 0; index < allRooms.length; ++index) {
-                var room = allRooms[index];
+                let room2 = allRooms[index];
 
-                if (room.name == data || room.name == duplicateName) {
+                if (room2.name == data || room2.name == duplicateName) {
                     data = orignalName + " (" + counter + ")";
                     duplicateName = data;
                     index = 0;
@@ -232,7 +267,8 @@ module.exports = function (io) {
             allRooms.push({
                 name: data,
                 time: new Date(),
-                type: type
+                type: type,
+                paused: false
             });
             return data
         }
