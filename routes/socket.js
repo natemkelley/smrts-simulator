@@ -15,7 +15,7 @@ module.exports = function (io) {
         let movedSomething = false;
         let position = 0;
 
-        //console.log(socket)
+        console.log(colors.cyan(socket.id));
 
         //when someone is connected send these functions
         emitListOfSims(socket);
@@ -37,7 +37,7 @@ module.exports = function (io) {
         });
         socket.on('create room', function (data, type) {
             console.log('creating room ->', data);
-            room = pushNewRoomAndReturnName(data, type);
+            room = pushNewRoomAndReturnName(data, type, socket.id);
             console.log('creating room as ' + room);
 
             emitCreateRoom(socket, room, data);
@@ -72,11 +72,9 @@ module.exports = function (io) {
             });
         });
         socket.on('disconnect', function () {
-            socket.leave(room, function () {
-                console.log('socket leaving room');
-                removeRoom(room).then((status) => {
-                    emitListOfRooms(io, allRooms);
-                });
+            console.log('socket leaving room');
+            removeRoom(room, socket.id).then((status) => {
+                emitListOfRooms(io, allRooms);
             });
         });
 
@@ -96,21 +94,6 @@ module.exports = function (io) {
             console.log("Error from uploader", event);
         });
 
-        //send test tweets
-        // var test = true;
-        // (function loop() {
-        //     if (test) {
-        //         var rand = Math.round(Math.floor(Math.random() * 10000) + 5000);
-        //         setTimeout(function () {
-        //             var randomNumber = 1;
-        //             // console.log('send tweet');
-        //             var tweet = functions.testTweets(randomNumber);
-        //             emitSendTweet(io, room, tweet);
-        //             //emitListOfSims(socket)
-        //             loop();
-        //         }, rand);
-        //     }
-        // }());
 
         //emit a list of uploaded simulation names
         function emitListOfSims(socket) {
@@ -134,15 +117,16 @@ module.exports = function (io) {
                     let paused = getPaused(room);
                     let roomExists = getRoomExists(room);
 
-
-
-                    console.log('looping', room, 'with a status of', paused, 'at the pos', position);
+                    console.log('looping', room, 'with a paused of', paused, 'at the pos', position);
 
                     if ((!movedSomething && !paused) && roomExists) {
                         emitSendTweet(io, room, tweet);
                         loop(tweets, room, ++position);
-                    } else {
+                    } else if (roomExists) {
                         loop(tweets, room, position)
+                    } else {
+                        console.log(colors.red('No room found. Ending Loop.'));
+                        sendSessionEndStatusToRemainingRooms(io, room)
                     }
                 }, rand);
             }
@@ -174,12 +158,6 @@ module.exports = function (io) {
         function emitConfirmJoinRoom(socket, room, simName) {
             console.log('emit join room', room);
             socket.emit('join room', room);
-            // database.getSingleTwitterSimulation(simName)
-            //     .then(results => {
-            //         // console.log('results', results);
-            //         // socket.emit('results', results);
-            //         loop(results[0].simulation, room, 0);
-            //     })
         }
 
         //reset front end after fast forward or rewind
@@ -220,11 +198,13 @@ module.exports = function (io) {
             emitUploadStatus(socket, status);
         }
 
-        function removeRoom(roomName) {
+        function removeRoom(roomName, socketID) {
             return new Promise((resolve, reject) => {
                 var returnVal = false;
+
                 for (var index = 0; index < allRooms.length; ++index) {
-                    if (allRooms[index].name == roomName) {
+                    if ((allRooms[index].name == roomName) && (allRooms[index]).socketID == socketID) {
+                        console.log(colors.yellow('removing room ' + roomName));
                         allRooms.splice(index, 1);
                         returnVal = true;
                     }
@@ -248,7 +228,7 @@ module.exports = function (io) {
             })
         }
 
-        function pushNewRoomAndReturnName(data, type) {
+        function pushNewRoomAndReturnName(data, type, socketID) {
             var orignalName = data;
             var duplicateName = null;
             var counter = 1;
@@ -264,21 +244,26 @@ module.exports = function (io) {
                 }
             }
 
+            console.log(colors.cyan(socketID))
             allRooms.push({
                 name: data,
                 time: new Date(),
                 type: type,
-                paused: false
+                paused: false,
+                socketID: socketID
             });
             return data
+        }
+
+        function sendSessionEndStatusToRemainingRooms(io, roomName) {
+            console.log(colors.red('informing users of session end'))
+            io.to(roomName).emit('session ended', true);
         }
 
     });
 
 };
 
-
-/*Assume a usable simulation*/
 
 /*********NOTES ON HOW TO USE THIS FILE******************/
 //https://www.npmjs.com/package/socketio-file-upload
