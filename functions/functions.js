@@ -1,9 +1,10 @@
 var fs = require('fs');
 var colors = require('colors/safe');
-var database = require('../functions/database')
-var functions = require('../functions/functions')
-var sockets = require('../routes/socket')
-var csv = require('csvtojson')
+var database = require('../functions/database');
+var functions = require('../functions/functions');
+var sockets = require('../routes/socket');
+var csv = require('csvtojson');
+var faker = require('faker');
 
 //promise, reveives data from socket, checks format, sends it to be processed or alerts user that format is wrong
 exports.receiveUpload = function (data) {
@@ -71,10 +72,15 @@ exports.receiveUpload = function (data) {
             console.log('building simulation'.cyan);
             receivedSim.forEach(function (tweet) {
                 var newTweet = buildTweet(tweet);
+                addFakeData(newTweet);
                 simulationArray.push(newTweet)
             })
 
             return simulationArray
+        }
+
+        function addFakeData(tweet){
+            tweet.user.profile_image_url = faker.image.avatar();
         }
 
         //create a tweet from the tweet model and returns new tweet

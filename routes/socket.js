@@ -112,6 +112,7 @@ module.exports = function (io) {
         function loop(tweets, room, position) {
             if (position < tweets.length - 1) {
                 let rand = Math.round(Math.floor(Math.random() * 7000) + 1000);
+                rand = 3000;
                 setTimeout(function () {
                     let tweet = tweets[position];
                     let paused = getPaused(room);
