@@ -21,7 +21,6 @@ mongoose.connection.on('error', function (err) {
 });
 
 
-
 /***********TWITTER SIMULATIONS*************/
 //define the model and schema for twitter
 require('../models/twitterModel');
