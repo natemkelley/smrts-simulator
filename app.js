@@ -28,8 +28,8 @@ var socket = require('./routes/socket')(io);
 
 
 //routes for api
-var routes = require('./routes/api');
-app.use('/api', routes);
+//var routes = require('./routes/api');
+//app.use('/api', routes);
 
 //.html files from public will be sent on root
 app.use('/', express.static('public'));
